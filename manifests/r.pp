@@ -14,4 +14,9 @@ class datashield::r {
 
   ::r::package { 'devtools': dependencies => true,}
 
+  ::opal::datashield_install {'dsBase': require => Exec['install_r_package_opaladmin']}
+  ::opal::datashield_install {'dsStats': require => Exec['install_r_package_opaladmin']}
+  ::opal::datashield_install {'dsGraphics': require => Exec['install_r_package_opaladmin']}
+  ::opal::datashield_install {'dsModelling': require => Exec['install_r_package_opaladmin']}
+
 }
