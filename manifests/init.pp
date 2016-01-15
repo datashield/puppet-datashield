@@ -95,7 +95,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true, 
         group => "adm",
         mode => '0644',
         source => "puppet:///modules/datashield/testdata",
-        require => [Service['opal'], Service['rserver']]
+        require => [Service['opal'], Service['rserver'], Exec['register_db__identifiers']]
       }
       ::opal::add_project { 'CNSIM':
         payload => "{\\\"name\\\": \\\"CNSIM\\\", \\\"title\\\": \\\"CNSIM\\\", \\\"description\\\": \\\"Simulated data\\\", \\\"database\\\": \\\"mongodb\\\" }",
