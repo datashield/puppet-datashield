@@ -1,8 +1,9 @@
-class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true, $change_opal_password=false) {
+class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
+  $opal_password='password', $opal_password_hash = '$shiro1$SHA-256$500000$dxucP0IgyO99rdL0Ltj1Qg==$qssS60kTC7TqE61/JFrX/OEk0jsZbYXjiGhR7/t+XNY=') {
 
   # r and datashield / opal packages
-  include ::datashield::r
-  class {::opal: change_password => $change_opal_password}
+  class {::datashield::r: opal_password => $opal_password, require => Class['::opal::install']}
+  class {::opal: opal_password => $opal_password, opal_password_hash => $opal_password_hash}
   include ::firewall
 
   if ($firewall){
@@ -45,33 +46,33 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true, 
       override_options => { 'mysqld' => { 'default-storage-engine' => 'innodb',
         'character-set-server' => 'utf8',} }
     }
-    mysql::db { 'opal_data':
+    ::mysql::db { 'opal_data':
       user     => 'opaluser',
       password => 'opalpass',
       host     => 'localhost',
       grant    => ['ALL'],
     } ->
-    ::opal::db_register {'sqldb': payload => "{\\\"usedForIdentifiers\\\": false, \\\"name\\\": \\\"sqldb\\\", \\\"usage\\\": \\\"STORAGE\\\", \\\"defaultStorage\\\": false, \\\"sqlSettings\\\": {
+    ::opal::db_register {'sqldb': opal_password => $opal_password, payload => "{\\\"usedForIdentifiers\\\": false, \\\"name\\\": \\\"sqldb\\\", \\\"usage\\\": \\\"STORAGE\\\", \\\"defaultStorage\\\": false, \\\"sqlSettings\\\": {
     \\\"url\\\": \\\"jdbc:mysql://localhost:3306/opal_data\\\", \\\"driverClass\\\": \\\"com.mysql.jdbc.Driver\\\", \\\"username\\\": \\\"opaluser\\\",
     \\\"password\\\": \\\"opalpass\\\", \\\"properties\\\": \\\"\\\", \\\"sqlSchema\\\": \\\"HIBERNATE\\\" }}"}
     if !($mongodb) {
-      mysql::db { 'opal_ids':
+      ::mysql::db { 'opal_ids':
         user     => 'opaluser',
         password => 'opalpass',
         host     => 'localhost',
         grant    => ['ALL'],
-      } -> ::opal::db_register { '_identifiers': payload => "{\\\"usedForIdentifiers\\\": true, \\\"name\\\": \\\"_identifiers\\\", \\\"usage\\\": \\\"STORAGE\\\", \\\"defaultStorage\\\": false, \\\"sqlSettings\\\": {
+      } -> ::opal::db_register { '_identifiers': opal_password => $opal_password, payload => "{\\\"usedForIdentifiers\\\": true, \\\"name\\\": \\\"_identifiers\\\", \\\"usage\\\": \\\"STORAGE\\\", \\\"defaultStorage\\\": false, \\\"sqlSettings\\\": {
     \\\"url\\\": \\\"jdbc:mysql://localhost:3306/opal_ids\\\", \\\"driverClass\\\": \\\"com.mysql.jdbc.Driver\\\", \\\"username\\\": \\\"opaluser\\\",
     \\\"password\\\": \\\"opalpass\\\", \\\"properties\\\": \\\"\\\", \\\"sqlSchema\\\": \\\"HIBERNATE\\\" }}"}
     }
   }
 
   if ($mongodb) {
-    class {'::mongodb':} -> ::opal::db_register {'mongodb':
+    class {'::mongodb':} -> ::opal::db_register {'mongodb': opal_password => $opal_password,
       payload => "{\\\"usedForIdentifiers\\\": false, \\\"name\\\": \\\"mongodb\\\", \\\"usage\\\": \\\"STORAGE\\\",
       \\\"defaultStorage\\\": true, \\\"mongoDbSettings\\\": {\\\"url\\\": \\\"mongodb://localhost:27017/opal_data\\\",
       \\\"username\\\": \\\"\\\", \\\"password\\\": \\\"\\\", \\\"properties\\\": \\\"\\\"}}",
-    } -> ::opal::db_register {'_identifiers':
+    } -> ::opal::db_register {'_identifiers': opal_password => $opal_password,
       payload => "{\\\"usedForIdentifiers\\\": true, \\\"name\\\": \\\"_identifiers\\\", \\\"usage\\\": \\\"STORAGE\\\",
       \\\"defaultStorage\\\": false, \\\"mongoDbSettings\\\": {\\\"url\\\": \\\"mongodb://localhost:27017/opal_ids\\\",
       \\\"username\\\": \\\"\\\", \\\"password\\\": \\\"\\\", \\\"properties\\\": \\\"\\\"}}",
@@ -95,24 +96,25 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true, 
         group => "adm",
         mode => '0644',
         source => "puppet:///modules/datashield/testdata",
-        require => [Service['opal'], Service['rserver'], Exec['register_db__identifiers']]
+        require => [Class['::opal::install'], ] # Exec['register_db__identifiers']
       }
-      ::opal::add_project { 'CNSIM':
+      ::opal::add_project { 'CNSIM': opal_password => $opal_password,
         payload => "{\\\"name\\\": \\\"CNSIM\\\", \\\"title\\\": \\\"CNSIM\\\", \\\"description\\\": \\\"Simulated data\\\", \\\"database\\\": \\\"mongodb\\\" }",
         require => Service['mongod']
       } ->
-      ::opal::import_data {'CNSIM': path => '/home/administrator/testdata/CNSIM/CNSIM.zip', require => File['testdata']}
+      ::opal::import_data {'CNSIM': opal_password => $opal_password, path => '/home/administrator/testdata/CNSIM/CNSIM.zip', require => File['testdata']}
 
-      ::opal::add_project { 'DASIM':
+      ::opal::add_project { 'DASIM': opal_password => $opal_password,
         payload => "{\\\"name\\\": \\\"DASIM\\\", \\\"title\\\": \\\"DASIM\\\", \\\"description\\\": \\\"Simulated data\\\", \\\"database\\\": \\\"mongodb\\\" }",
         require => Service['mongod']
       } ->
-      ::opal::import_data {'DASIM': path => '/home/administrator/testdata/DASIM/DASIM.zip', require => File['testdata']}
+      ::opal::import_data {'DASIM': opal_password => $opal_password, path => '/home/administrator/testdata/DASIM/DASIM.zip', require => File['testdata']}
 
-      ::opal::add_project { 'SURVIVAL':
+      ::opal::add_project { 'SURVIVAL': opal_password => $opal_password,
         payload => "{\\\"name\\\": \\\"SURVIVAL\\\", \\\"title\\\": \\\"SURVIVAL\\\", \\\"description\\\": \\\"Simulated data\\\", \\\"database\\\": \\\"mongodb\\\" }",
         require => Service['mongod']
-      }
+      } ->
+      ::opal::import_data {'SURVIVAL': opal_password => $opal_password, path => '/home/administrator/testdata/SURVIVAL/SURVIVAL.zip', require => File['testdata']}
     }
 
   }
