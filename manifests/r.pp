@@ -1,4 +1,4 @@
-class datashield::r ($opal_password = 'password') {
+class datashield::r ($opal_password = 'password', $server_side = true) {
   include datashield::packages::libcurl
   include datashield::packages::libxml
   include datashield::packages::openssl
@@ -14,9 +14,10 @@ class datashield::r ($opal_password = 'password') {
 
   ::r::package { 'devtools': dependencies => true,}
 
-  ::opal::datashield_install {'dsBase': opal_password => $opal_password, require => Exec['install_r_package_opaladmin']}
-  ::opal::datashield_install {'dsStats': opal_password => $opal_password, require => Exec['install_r_package_opaladmin']}
-  ::opal::datashield_install {'dsGraphics': opal_password => $opal_password, require => Exec['install_r_package_opaladmin']}
-  ::opal::datashield_install {'dsModelling': opal_password => $opal_password, require => Exec['install_r_package_opaladmin']}
-
+  if ($server_side){
+    ::opal::datashield_install { 'dsBase': opal_password => $opal_password, require => Exec['install_r_package_opaladmin'] }
+    ::opal::datashield_install { 'dsStats': opal_password => $opal_password, require => Exec['install_r_package_opaladmin'] }
+    ::opal::datashield_install { 'dsGraphics': opal_password => $opal_password, require => Exec['install_r_package_opaladmin'] }
+    ::opal::datashield_install { 'dsModelling': opal_password => $opal_password, require => Exec['install_r_package_opaladmin'] }
+  }
 }
