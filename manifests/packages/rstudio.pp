@@ -1,5 +1,4 @@
-class datashield::packages::rstudio {
-
+class datashield::packages::rstudio($user_name = 'datashield', $password_hash = 'mrtyHtvJlH8D2') {
 
   case $::operatingsystem {
     'Ubuntu': {
@@ -31,9 +30,9 @@ class datashield::packages::rstudio {
 
   }
 
-  user { 'datashield':
+  user { $user_name:
     ensure   => present,
-    password => 'mrtyHtvJlH8D2',
+    password => $password_hash,
     notify => Service['rstudio-server'],
     managehome => true,
   }

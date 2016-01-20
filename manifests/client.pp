@@ -1,4 +1,4 @@
-class datashield::client ($rstudio = true, $firewall = true){
+class datashield::client ($rstudio = true, $firewall = true, $user_name = 'datashield', $password_hash = 'mrtyHtvJlH8D2'){
 
   include ::firewall
 
@@ -41,7 +41,7 @@ class datashield::client ($rstudio = true, $firewall = true){
   }
 
   if ($rstudio){
-    include datashield::packages::rstudio
+    class {datashield::packages::rstudio: user_name => $user_name, password_hash => $password_hash}
   }
 
 }
