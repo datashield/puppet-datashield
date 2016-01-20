@@ -1,4 +1,4 @@
-class ::datashield::client ($rstudio = true, $firewall = true){
+class datashield::client ($rstudio = true, $firewall = true){
 
   include ::firewall
 
