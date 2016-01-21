@@ -12,7 +12,7 @@ class datashield::r ($opal_password = 'password', $server_side = true) {
       require => Class['::r'],
   }
 
-  ::r::package { 'devtools': dependencies => true,} ->
+  ::r::package { 'devtools': dependencies => true,}
   ::r::package { 'testthat': dependencies => true,}
 
   if ($server_side){
