@@ -9,22 +9,23 @@ class datashield::packages::rstudio($user_name = 'datashield', $password_hash = 
         timeout     => 0,
         verbose     => false,
       } ->
-      package { 'rstudio':
+      package { 'rstudio-server-0.99.491-amd64.deb':
         ensure => 'installed',
         source => '/tmp/rstudio-server-0.99.491-amd64.deb',
         provider => 'gdebi',
         require => Class['::r'],
+        alias => 'rstudio',
       }
 
     }
 
     'Centos': {
-
-      package { 'rstudio':
+      package { 'rstudio-server':
         ensure => 'installed',
         source => 'https://download2.rstudio.org/rstudio-server-rhel-0.99.491-x86_64.rpm',
         provider => 'rpm',
         require => Class['::r'],
+        alias => 'rstudio',
       }
     }
 
