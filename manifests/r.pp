@@ -12,7 +12,8 @@ class datashield::r ($opal_password = 'password', $server_side = true) {
       require => Class['::r'],
   }
 
-  ::r::package { 'devtools': dependencies => true,}
+  ::r::package { 'devtools': dependencies => true,} ->
+  ::r::package { 'testthat': dependencies => true,}
 
   if ($server_side){
     ::opal::datashield_install { 'dsBase': opal_password => $opal_password, require => Exec['install_r_package_opaladmin'] }
