@@ -5,6 +5,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
   class {::datashield::r: opal_password => $opal_password, require => Class['::opal::install']}
   class {::opal: opal_password => $opal_password, opal_password_hash => $opal_password_hash}
   include ::firewall
+  class {::datashield::packages::openjdk: notify => Package['opal']}
 
   if ($firewall){
     Firewall {
