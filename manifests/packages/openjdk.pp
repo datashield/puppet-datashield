@@ -1,31 +1,38 @@
 class datashield::packages::openjdk {
 
-  $openjdk = $::operatingsystem ? {
-    'Ubuntu'  => 'openjdk-7-jre',
-    'Debian'  => 'openjdk-7-jre',
-    'CentOS'  => 'java-1.7.0-openjdk-devel',
-    'RHEL'    => 'java-1.7.0-openjdk-devel',
-    'Fedora'  => 'java-1.7.0-openjdk-devel',
-    default => 'java-1.7.0-openjdk-devel',
+  case $::operatingsystem {
+    'Ubuntu': {
+      include ::apt
+      apt::ppa { 'ppa:openjdk-r/ppa': notify => Class['apt::update'],}
+      ->
+      package { 'openjdk-8-jre':
+        ensure  => 'present',
+        alias   => 'java8'
+      }
+      -> alternatives {'java':
+        path  => '/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java'
+      }
+    }
+    'Centos': {
+      package { 'java-1.8.0-openjdk':
+        ensure  => 'present',
+        alias   => 'java8'
+      }
+    }
   }
 
-  $java_path = $::operatingsystem ? {
-    'Ubuntu'  => '/usr/lib/jvm/java-7-openjdk-i386/jre/bin/java',
-    'Debian'  => '/usr/lib/jvm/java-7-openjdk-i386/jre/bin/java',
-    'CentOS'  => '/usr/lib/jvm/jre-1.7.0-openjdk.x86_64/bin/java',
-    'RHEL'    => '/usr/lib/jvm/jre-1.7.0-openjdk.x86_64/bin/java',
-    'Fedora'  => '/usr/lib/jvm/jre-1.7.0-openjdk.x86_64/bin/java',
-    default => '/usr/lib/jvm/jre-1.7.0-openjdk.x86_64/bin/java',
-  }
-
-  package { $openjdk:
-    ensure => 'present',
-    alias  => 'openjdk',
-  }
-
-  alternatives {'java':
-    path    => $java_path,
-    require => Package['openjdk'],
-  }
+  # $java_path = $::operatingsystem ? {
+  #   'Ubuntu'  => '/usr/lib/jvm/java-7-openjdk-i386/jre/bin/java',
+  #   'Debian'  => '/usr/lib/jvm/java-7-openjdk-i386/jre/bin/java',
+  #   'CentOS'  => '/usr/lib/jvm/jre-1.7.0-openjdk.x86_64/bin/java',
+  #   'RHEL'    => '/usr/lib/jvm/jre-1.7.0-openjdk.x86_64/bin/java',
+  #   'Fedora'  => '/usr/lib/jvm/jre-1.7.0-openjdk.x86_64/bin/java',
+  #   default => '/usr/lib/jvm/jre-1.7.0-openjdk.x86_64/bin/java',
+  # }
+  #
+  # alternatives {'java':
+  #   path    => $java_path,
+  #   require => Package['openjdk'],
+  # }
 
 }
