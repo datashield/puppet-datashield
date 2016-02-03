@@ -3,10 +3,12 @@ class datashield::packages::openjdk {
   case $::operatingsystem {
     'Ubuntu': {
       include ::apt
+      package {'software-properties-common': ensure  => 'present'} ->
       apt::ppa { 'ppa:openjdk-r/ppa': notify => Class['apt::update'],}
       ->
       package { 'openjdk-8-jre':
         ensure  => 'present',
+        require =>  Class['apt::update'],
         alias   => 'java8'
       }
       -> alternatives {'java':
