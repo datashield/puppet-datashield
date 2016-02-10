@@ -64,7 +64,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
       host     => 'localhost',
       grant    => ['ALL'],
     } ->
-    ::opal::db_register { 'sqldb':
+    ::opal::database { 'sqldb':
       opal_password      => $opal_password,
       db                 => 'mysql',
       usedForIdentifiers => 'false',
@@ -77,7 +77,8 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
         password => 'opalpass',
         host     => 'localhost',
         grant    => ['ALL'],
-      } -> ::opal::db_register { '_identifiers':
+      } ->
+      ::opal::database { '_identifiers':
         opal_password      => $opal_password,
         db                 => 'mysql',
         usedForIdentifiers => 'true',
@@ -88,7 +89,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
   }
 
   if ($remote_mysql) {
-    ::opal::db_register { 'sqldb_remote':
+    ::opal::database { 'sqldb_remote':
       opal_password      => $opal_password,
       db                 => 'mysql',
       usedForIdentifiers => 'false',
@@ -101,7 +102,8 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
         password => 'opalpass',
         host     => 'localhost',
         grant    => ['ALL'],
-      } -> ::opal::db_register { '_identifiers':
+      } ->
+      ::opal::database { '_identifiers':
         opal_password      => $opal_password,
         db                 => 'mysql',
         usedForIdentifiers => 'true',
@@ -112,15 +114,15 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
   }
 
   if ($mongodb) {
-    class { ::mongodb: }
-    -> ::opal::db_register { 'mongodb':
+    class { ::mongodb: } ->
+    ::opal::database { 'mongodb':
       opal_password      => $opal_password,
       db                 => 'mongodb',
       usedForIdentifiers => 'false',
       defaultStorage     => 'true',
       url                => 'mongodb://localhost:27017/opal_data'
-    }
-    -> ::opal::db_register { '_identifiers':
+    } ->
+    ::opal::database { '_identifiers':
       opal_password      => $opal_password,
       db                 => 'mongodb',
       usedForIdentifiers => 'true',
@@ -130,7 +132,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
   }
 
   if ($remote_mongodb) {
-    ::opal::db_register { 'mongodb_remote':
+    ::opal::database { 'mongodb_remote':
       opal_password      => $opal_password,
       db                 => 'mongodb',
       username           => $remote_mongodb_user,
@@ -139,7 +141,8 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
       defaultStorage     => 'true',
       url                => "mongodb://${remote_mongodb_url}/opal_data"
     }
-    -> ::opal::db_register { '_identifiers':
+    ->
+    ::opal::database { '_identifiers':
       opal_password      => $opal_password,
       db                 => 'mongodb',
       username           => $remote_mongodb_user,
@@ -169,37 +172,37 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
         source  => "puppet:///modules/datashield/testdata",
         require => Class['::opal::install']
       }
-      ::opal::add_project { 'CNSIM':
+      ::opal::project { 'CNSIM':
         opal_password => $opal_password,
         database      => "mongodb",
         description   => "Simulated data",
-        require       => Service['mongod']
+        # require       => Service['mongod']
       } ->
-      ::opal::import_data { 'CNSIM':
+      ::opal::data { 'CNSIM':
         opal_password => $opal_password,
         path          => '/home/administrator/testdata/CNSIM/CNSIM.zip',
         require       => File['testdata']
       }
 
-      ::opal::add_project { 'DASIM':
+      ::opal::project { 'DASIM':
         opal_password => $opal_password,
         database      => "mongodb",
         description   => "Simulated data",
-        require       => Service['mongod']
+        # require       => Service['mongod']
       } ->
-      ::opal::import_data { 'DASIM':
+      ::opal::data { 'DASIM':
         opal_password => $opal_password,
         path          => '/home/administrator/testdata/DASIM/DASIM.zip',
         require       => File['testdata']
       }
 
-      ::opal::add_project { 'SURVIVAL':
+      ::opal::project { 'SURVIVAL':
         opal_password => $opal_password,
         database      => "mongodb",
         description   => "Simulated data",
-        require       => Service['mongod']
+        # require       => Service['mongod']
       } ->
-      ::opal::import_data { 'SURVIVAL':
+      ::opal::data { 'SURVIVAL':
         opal_password => $opal_password,
         path          => '/home/administrator/testdata/SURVIVAL/SURVIVAL.zip',
         require       => File['testdata']
