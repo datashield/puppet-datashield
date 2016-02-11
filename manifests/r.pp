@@ -22,9 +22,9 @@ class datashield::r ($opal_password = 'password', $server_side = true) {
   ::r::package { 'testthat': dependencies => true, }
 
   if ($server_side){
-    ::opal::datashield_server { 'dsBase': opal_password => $opal_password, require => ::R::Package['opaladmin'] }
-    ::opal::datashield_server { 'dsStats': opal_password => $opal_password, require => ::R::Package['opaladmin'] }
-    ::opal::datashield_server { 'dsGraphics': opal_password => $opal_password, require => ::R::Package['opaladmin'] }
-    ::opal::datashield_server { 'dsModelling': opal_password => $opal_password, require => ::R::Package['opaladmin'] }
+    ::datashield::server { 'dsBase': opal_password => $opal_password }
+    ::datashield::server { 'dsStats': opal_password => $opal_password }
+    ::datashield::server { 'dsGraphics': opal_password => $opal_password }
+    ::datashield::server { 'dsModelling': opal_password => $opal_password }
   }
 }
