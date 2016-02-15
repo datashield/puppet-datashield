@@ -1,3 +1,67 @@
+# Class: datashield
+# ===========================
+#
+# Install and manage datashield and it's requirements on a system.
+#
+# Parameters
+# ----------
+#
+# * `opal_password`
+# The admin password for managing opal
+#
+# * `opal_password_hash`
+# The opal admin password hash to set the opal admin password
+#
+# * `firewall`
+# If true, turn on firewall and allow ports for Opal and datashield to be openned.
+#
+# * `mysql`
+# If true install mysql on the datashield server
+#
+# * `mongodb`
+# If true install mongodb on the datashield server, the _identifiers database will use mongodb by default
+#
+# * `remote_mongodb`
+# If true use a remote mongodb database server datashield server
+#
+# * `remote_mongodb_url`
+# URL of the remote mongodb server (used if remote_mongodb is true)
+#
+# * `remote_mongodb_user`
+# Username for the remote mongodb server (used if remote_mongodb is true)
+#
+# * `remote_mongodb_pass`
+# Password for the remote mongodb server (used if remote_mongodb is true)
+#
+# * `remote_mysql`
+# If true use a remote mysql database server datashield server
+#
+# * `remote_mysql_url`
+# URL of the remote mysql server (used if remote_mysql is true)
+#
+# * `remote_mysql_user`
+# Username for the remote mysql server (used if remote_mysql is true)
+#
+# * `remote_mysql_pass`
+# Password for the remote mysql server (used if remote_mysql is true)
+#
+# * `test_data`
+# Installs the test data with the opal install
+#
+# Examples
+# --------
+#
+# @example
+#    class {::datashield:
+#      firewall => false,
+#    }
+#
+# Authors
+# -------
+#
+# Neil Parley
+#
+
 class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
   $remote_mongodb=false, $remote_mongodb_url='', $remote_mongodb_user='', $remote_mongodb_pass='',
   $remote_mysql=false, $remote_mysql_url='', $remote_mysql_user='', $remote_mysql_pass='',

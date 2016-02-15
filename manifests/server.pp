@@ -1,3 +1,35 @@
+# Type: datashield::server
+# ===========================
+#
+# Installs R server side packages using opaladmin
+#
+# Parameters
+# ----------
+#
+# * `r_path`
+# Path to the R binary, default is '/usr/bin/R'
+#
+# * `opal_password`
+# Admin password for opal (required to installed the datashield server packages)
+#
+# * `opal_url`
+# Url of the opal REST server, default is 'http://localhost:8080'
+#
+#
+# Examples
+# --------
+#
+# @example
+#    ::datashield::server { 'dsBase':
+#      opal_password => $opal_password
+#    }
+#
+# Authors
+# -------
+#
+# Neil Parley
+#
+
 define datashield::server($r_path = '/usr/bin/R', $opal_password = 'password', $opal_url='http://localhost:8080') {
 
   include ::r

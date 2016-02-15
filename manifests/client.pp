@@ -1,8 +1,45 @@
+# Class: datashield::client
+# ===========================
+#
+# Install a datashield client machine without installing any of the server components (e.g. Opal)
+#
+# Parameters
+# ----------
+#
+# * `rstudio`
+# Install rstudio on the client
+#
+# * `firewall`
+# If true, turn on firewall and allow ports for ssh and rstudio
+#
+# * `user_name`
+# User to be installed on the client for rstudio
+#
+# * `password_hash`
+# Password hash of the user above
+#
+#
+# Examples
+# --------
+#
+# @example
+#    class {::datashield::client,
+#      firewall => true,
+#    }
+#
+# Authors
+# -------
+#
+# Neil Parley
+#
+
 class datashield::client ($rstudio = true, $firewall = true, $user_name = 'datashield', $password_hash = 'mrtyHtvJlH8D2'){
 
   include ::firewall
 
-  class {::datashield::r: server_side => false}
+  class { ::datashield::r:
+    server_side => false
+  }
 
   if ($firewall){
     Firewall {
@@ -25,9 +62,10 @@ class datashield::client ($rstudio = true, $firewall = true, $user_name = 'datas
     }
     firewall { '100 allow ssh access':
       dport   => '22',
-      proto  => tcp,
-      action => accept,
+      proto   => tcp,
+      action  => accept,
     }
+
     if ($rstudio) {
       firewall { "900 accept rstudio ports":
         proto      => "tcp",
@@ -35,13 +73,17 @@ class datashield::client ($rstudio = true, $firewall = true, $user_name = 'datas
         action     => "accept",
       }
     }
+
     firewall { '999 drop all other requests':
       action => 'drop',
     }
   }
 
   if ($rstudio){
-    class {datashield::packages::rstudio: user_name => $user_name, password_hash => $password_hash}
+    class { datashield::packages::rstudio:
+      user_name     => $user_name,
+      password_hash => $password_hash
+    }
   }
 
 }

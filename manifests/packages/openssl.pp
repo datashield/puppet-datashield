@@ -1,3 +1,21 @@
+# Class: datashield::packages::openssl
+# ===========================
+#
+# Install openssl library required for some R packages
+#
+# Examples
+# --------
+#
+# @example
+#    class {datashield::packages::openssl,
+#    }
+#
+# Authors
+# -------
+#
+# Neil Parley
+#
+
 class datashield::packages::openssl {
 
   $openSSL = $::operatingsystem ? {
