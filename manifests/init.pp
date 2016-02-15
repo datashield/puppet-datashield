@@ -71,7 +71,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
     } ->
     ::opal::database { 'sqldb':
       opal_password      => $opal_password,
-      db                 => 'mysql',
+      db_type            => 'mysql',
       usedForIdentifiers => false,
       url                => 'jdbc:mysql://localhost:3306/opal_data',
       username           => 'opaluser',
@@ -86,7 +86,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
       } ->
       ::opal::database { '_identifiers':
         opal_password      => $opal_password,
-        db                 => 'mysql',
+        db_type            => 'mysql',
         usedForIdentifiers => true,
         url                => 'jdbc:mysql://localhost:3306/opal_ids',
         username           => 'opaluser',
@@ -97,7 +97,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
   if ($remote_mysql) {
     ::opal::database { 'sqldb_remote':
       opal_password      => $opal_password,
-      db                 => 'mysql',
+      db_type            => 'mysql',
       usedForIdentifiers => false,
       url                => "jdbc:mysql://${remote_mysql_url}/opal_data",
       username           => $remote_mysql_user,
@@ -126,14 +126,14 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
     class { ::mongodb: } ->
     ::opal::database { 'mongodb':
       opal_password      => $opal_password,
-      db                 => 'mongodb',
+      db_type            => 'mongodb',
       usedForIdentifiers => false,
       defaultStorage     => true,
       url                => 'mongodb://localhost:27017/opal_data'
     } ->
     ::opal::database { '_identifiers':
       opal_password      => $opal_password,
-      db                 => 'mongodb',
+      db_type            => 'mongodb',
       usedForIdentifiers => true,
       defaultStorage     => false,
       url                => 'mongodb://localhost:27017/opal_ids'
@@ -143,11 +143,11 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
   if ($remote_mongodb) {
     ::opal::database { 'mongodb_remote':
       opal_password      => $opal_password,
-      db                 => 'mongodb',
+      db_type            => 'mongodb',
       username           => $remote_mongodb_user,
       password           => $remote_mongodb_pass,
       usedForIdentifiers => false,
-      defaultStorage     => true,
+      defaultStorage     => false,
       url                => "mongodb://${remote_mongodb_url}/opal_data"
     }
 
