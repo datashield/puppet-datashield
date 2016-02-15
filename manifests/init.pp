@@ -166,8 +166,20 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
 
   if ($test_data) {
 
-    if !($mongodb){
-      fail("To use the test data you need mongodb to be installed. Set Mongodb to true")
+    if ($mongodb) and !($test_db){
+      $test_db = "mongodb"
+    }
+    if ($remote_mongodb) and !($test_db){
+      $test_db = "mongodb_remote"
+    }
+    if ($mysql) and !($test_db){
+      $test_db = "sqldb"
+    }
+    if ($remote_mysql) and !($test_db){
+      $test_db = "sqldb_remote"
+    }
+    if !($test_db) {
+      fail("No database for test data")
     }
 
     if (mongodb) {
@@ -183,9 +195,10 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
         source  => "puppet:///modules/datashield/testdata",
         require => Class['::opal::install']
       }
+
       ::opal::project { 'CNSIM':
         opal_password => $opal_password,
-        database      => "mongodb",
+        database      => $test_db,
         description   => "Simulated data",
       } ->
       ::opal::data { 'CNSIM':
@@ -196,7 +209,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
 
       ::opal::project { 'DASIM':
         opal_password => $opal_password,
-        database      => "mongodb",
+        database      => $test_db,
         description   => "Simulated data",
       } ->
       ::opal::data { 'DASIM':
@@ -207,7 +220,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
 
       ::opal::project { 'SURVIVAL':
         opal_password => $opal_password,
-        database      => "mongodb",
+        database      => $test_db,
         description   => "Simulated data",
       } ->
       ::opal::data { 'SURVIVAL':
