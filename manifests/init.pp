@@ -15,10 +15,18 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
   }
 
   # r and datashield / opal packages
-  class { ::datashield::r: opal_password => $opal_password, require => Class['::opal::install'] }
-  class { ::opal: opal_password => $opal_password, opal_password_hash => $opal_password_hash }
+  class { ::datashield::r:
+    opal_password => $opal_password,
+    require       => Class['::opal::install']
+  }
+  class { ::opal:
+    opal_password      => $opal_password,
+    opal_password_hash => $opal_password_hash
+  }
 
-  class { ::datashield::packages::openjdk: notify => Package['opal'] }
+  class { ::datashield::packages::openjdk:
+    notify => Package['opal']
+  }
 
   include ::firewall
 
