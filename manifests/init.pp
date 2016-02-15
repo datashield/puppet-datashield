@@ -67,7 +67,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
     ::opal::database { 'sqldb':
       opal_password      => $opal_password,
       db                 => 'mysql',
-      usedForIdentifiers => 'false',
+      usedForIdentifiers => false,
       url                => 'jdbc:mysql://localhost:3306/opal_data',
       username           => 'opaluser',
       password           => 'opalpass' }
@@ -81,7 +81,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
       ::opal::database { '_identifiers':
         opal_password      => $opal_password,
         db                 => 'mysql',
-        usedForIdentifiers => 'true',
+        usedForIdentifiers => true,
         url                => 'jdbc:mysql://localhost:3306/opal_ids',
         username           => 'opaluser',
         password           => 'opalpass' }
@@ -92,7 +92,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
     ::opal::database { 'sqldb_remote':
       opal_password      => $opal_password,
       db                 => 'mysql',
-      usedForIdentifiers => 'false',
+      usedForIdentifiers => false,
       url                => "jdbc:mysql://${remote_mysql_url}/opal_data",
       username           => $remote_mysql_user,
       password           => $remote_mysql_pass }
@@ -105,8 +105,8 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
       } ->
       ::opal::database { '_identifiers':
         opal_password      => $opal_password,
-        db                 => 'mysql',
-        usedForIdentifiers => 'true',
+        db                 => mysql,
+        usedForIdentifiers => true,
         url                => "jdbc:mysql://${remote_mysql_url}:3306/opal_ids",
         username           => $remote_mysql_user,
         password           => $remote_mysql_pass }
@@ -118,15 +118,15 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
     ::opal::database { 'mongodb':
       opal_password      => $opal_password,
       db                 => 'mongodb',
-      usedForIdentifiers => 'false',
-      defaultStorage     => 'true',
+      usedForIdentifiers => false,
+      defaultStorage     => true,
       url                => 'mongodb://localhost:27017/opal_data'
     } ->
     ::opal::database { '_identifiers':
       opal_password      => $opal_password,
       db                 => 'mongodb',
-      usedForIdentifiers => 'true',
-      defaultStorage     => 'false',
+      usedForIdentifiers => true,
+      defaultStorage     => false,
       url                => 'mongodb://localhost:27017/opal_ids'
     }
   }
@@ -137,8 +137,8 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
       db                 => 'mongodb',
       username           => $remote_mongodb_user,
       password           => $remote_mongodb_pass,
-      usedForIdentifiers => 'false',
-      defaultStorage     => 'true',
+      usedForIdentifiers => false,
+      defaultStorage     => true,
       url                => "mongodb://${remote_mongodb_url}/opal_data"
     }
     ->
@@ -147,8 +147,8 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
       db                 => 'mongodb',
       username           => $remote_mongodb_user,
       password           => $remote_mongodb_pass,
-      usedForIdentifiers => 'true',
-      defaultStorage     => 'false',
+      usedForIdentifiers => true,
+      defaultStorage     => false,
       url                => "mongodb://${remote_mongodb_url}/opal_ids"
     }
   }
@@ -176,7 +176,6 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
         opal_password => $opal_password,
         database      => "mongodb",
         description   => "Simulated data",
-        # require       => Service['mongod']
       } ->
       ::opal::data { 'CNSIM':
         opal_password => $opal_password,
@@ -188,7 +187,6 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
         opal_password => $opal_password,
         database      => "mongodb",
         description   => "Simulated data",
-        # require       => Service['mongod']
       } ->
       ::opal::data { 'DASIM':
         opal_password => $opal_password,
@@ -200,7 +198,6 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
         opal_password => $opal_password,
         database      => "mongodb",
         description   => "Simulated data",
-        # require       => Service['mongod']
       } ->
       ::opal::data { 'SURVIVAL':
         opal_password => $opal_password,
