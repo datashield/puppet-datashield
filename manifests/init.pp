@@ -3,11 +3,15 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
   $remote_mysql=false, $remote_mysql_url='', $remote_mysql_user='', $remote_mysql_pass='',
   $opal_password='password', $opal_password_hash = '$shiro1$SHA-256$500000$dxucP0IgyO99rdL0Ltj1Qg==$qssS60kTC7TqE61/JFrX/OEk0jsZbYXjiGhR7/t+XNY=') {
 
+  $remote_mongodb_ids = $remote_mongodb
+  $remote_mysql_ids = $remote_mysql
+
   if (($mongodb) and ($remote_mongodb)){
-    fail("Remote and local mongodb set")
+    $remote_mongodb_ids = false
   }
+
   if (($mysql) and ($remote_mysql)){
-    fail("Remote and local MySQL DB set")
+    $remote_mysql_ids = false
   }
 
   # r and datashield / opal packages
@@ -58,6 +62,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
       override_options => { 'mysqld' => { 'default-storage-engine' => 'innodb',
         'character-set-server'                                     => 'utf8', } }
     }
+
     ::mysql::db { 'opal_data':
       user     => 'opaluser',
       password => 'opalpass',
@@ -71,6 +76,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
       url                => 'jdbc:mysql://localhost:3306/opal_data',
       username           => 'opaluser',
       password           => 'opalpass' }
+
     if !(($mongodb) or ($remote_mongodb)) {
       ::mysql::db { 'opal_ids':
         user     => 'opaluser',
@@ -96,20 +102,23 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
       url                => "jdbc:mysql://${remote_mysql_url}/opal_data",
       username           => $remote_mysql_user,
       password           => $remote_mysql_pass }
+
     if !(($mongodb) or ($remote_mongodb)) {
-      ::mysql::db { 'opal_ids':
-        user     => 'opaluser',
-        password => 'opalpass',
-        host     => 'localhost',
-        grant    => ['ALL'],
-      } ->
-      ::opal::database { '_identifiers':
-        opal_password      => $opal_password,
-        db                 => mysql,
-        usedForIdentifiers => true,
-        url                => "jdbc:mysql://${remote_mysql_url}:3306/opal_ids",
-        username           => $remote_mysql_user,
-        password           => $remote_mysql_pass }
+      if ($remote_mysql_ids){
+        ::mysql::db { 'opal_ids':
+          user     => 'opaluser',
+          password => 'opalpass',
+          host     => 'localhost',
+          grant    => ['ALL'],
+        } ->
+        ::opal::database { '_identifiers':
+          opal_password      => $opal_password,
+          db_type            => 'mysql',
+          usedForIdentifiers => true,
+          url                => "jdbc:mysql://${remote_mysql_url}:3306/opal_ids",
+          username           => $remote_mysql_user,
+          password           => $remote_mysql_pass }
+      }
     }
   }
 
@@ -141,15 +150,17 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
       defaultStorage     => true,
       url                => "mongodb://${remote_mongodb_url}/opal_data"
     }
-    ->
-    ::opal::database { '_identifiers':
-      opal_password      => $opal_password,
-      db                 => 'mongodb',
-      username           => $remote_mongodb_user,
-      password           => $remote_mongodb_pass,
-      usedForIdentifiers => true,
-      defaultStorage     => false,
-      url                => "mongodb://${remote_mongodb_url}/opal_ids"
+
+    if ($remote_mongodb_ids) {
+      ::opal::database { '_identifiers':
+        opal_password      => $opal_password,
+        db_type            => 'mongodb',
+        username           => $remote_mongodb_user,
+        password           => $remote_mongodb_pass,
+        usedForIdentifiers => true,
+        defaultStorage     => false,
+        url                => "mongodb://${remote_mongodb_url}/opal_ids"
+      }
     }
   }
 
