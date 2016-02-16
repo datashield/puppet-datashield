@@ -12,6 +12,9 @@
 # * `firewall`
 # If true, turn on firewall and allow ports for ssh and rstudio
 #
+# * `create_user`
+# True if the user is to be created for rstudio. False if users are managed elsewhere
+#
 # * `user_name`
 # User to be installed on the client for rstudio
 #
@@ -33,7 +36,8 @@
 # Neil Parley
 #
 
-class datashield::client ($rstudio = true, $firewall = true, $user_name = 'datashield', $password_hash = 'mrtyHtvJlH8D2'){
+class datashield::client ($rstudio = true, $firewall = true,
+  $create_user = true, $user_name = 'datashield', $password_hash = 'mrtyHtvJlH8D2'){
 
   include ::firewall
 
@@ -81,6 +85,7 @@ class datashield::client ($rstudio = true, $firewall = true, $user_name = 'datas
 
   if ($rstudio){
     class { datashield::packages::rstudio:
+      create_user   => $create_user,
       user_name     => $user_name,
       password_hash => $password_hash
     }

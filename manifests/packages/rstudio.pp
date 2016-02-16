@@ -6,6 +6,9 @@
 # Parameters
 # ----------
 #
+# * `create_user`
+# True if the user is to be created. False if users are managed elsewhere
+#
 # * `user_name`
 # User to be installed on the client for rstudio
 #
@@ -27,7 +30,7 @@
 # Neil Parley
 #
 
-class datashield::packages::rstudio($user_name = 'datashield', $password_hash = 'mrtyHtvJlH8D2') {
+class datashield::packages::rstudio($create_user = true, $user_name = 'datashield', $password_hash = 'mrtyHtvJlH8D2') {
 
   case $::operatingsystem {
     'Ubuntu': {
@@ -60,11 +63,13 @@ class datashield::packages::rstudio($user_name = 'datashield', $password_hash = 
 
   }
 
-  user { $user_name:
-    ensure     => present,
-    password   => $password_hash,
-    notify     => Service['rstudio-server'],
-    managehome => true,
+  if ($create_user){
+    user { $user_name:
+      ensure     => present,
+      password   => $password_hash,
+      notify     => Service['rstudio-server'],
+      managehome => true,
+    }
   }
 
   service { 'rstudio-server':
