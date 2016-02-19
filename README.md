@@ -88,15 +88,19 @@ class {'::datashield::client':
 ### datashield
 
 ```puppet
-class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
+class datashield ( $test_data=true, $firewall=true,
+  $mysql=true, $mysql_root_password='rootpass', $mysql_user='opaluser', $mysql_pass='opalpass',
+  $mongodb=true, $mongodb_user='opaluser', $mongodb_pass='opalpass',
   $remote_mongodb=false, $remote_mongodb_url='', $remote_mongodb_user='', $remote_mongodb_pass='',
   $remote_mysql=false, $remote_mysql_url='', $remote_mysql_user='', $remote_mysql_pass='',
-  $opal_password='password', 
-  $opal_password_hash = '$shiro1$SHA-256$500000$dxucP0IgyO99rdL0Ltj1Qg==$qssS60kTC7TqE61/JFrX/OEk0jsZbYXjiGhR7/t+XNY=') 
+  $opal_password='password', $opal_password_hash = '$shiro1$SHA-256$500000$dxucP0IgyO99rdL0Ltj1Qg==$qssS60kTC7TqE61/JFrX/OEk0jsZbYXjiGhR7/t+XNY=') 
 ```
 Creates a machine as a datashield server. `$test_data` is true to install the datashield test data with Opal. `$firewall` 
 installs a fireware on the server machine and only opens the ports required by datashield to operate. `$mysql` installs 
-a mysql database server on the machine, similarly `$mongodb` installs a mongodb server on the machine. `$remote_mongodb`
+a mysql database server on the machine, similarly `$mongodb` installs a mongodb server on the machine. For the MySQL 
+install there are `$mysql_root_password`, `$mysql_user` and `$mysql_pass` variables. These set the root MySQL password 
+and create a MySQL user / password for the MySQL opal tables creation. For the mongoDB install there are the variables 
+`$mongodb_user` and `$mongodb_pass`. These create a user with root access to the mongoDB database server. `$remote_mongodb`
 is true if there is a remote mongodb server that opal needs to connect to. `$remote_mongodb_url`, `$remote_mongodb_user`,
 `$remote_mongodb_pass` are then the URL, the username and the password of the remote database server. `$remote_mysql`,
 `$remote_mysql_url`, `$remote_mysql_user`, `$remote_mysql_pass` are the equivalent for a remote mysql server. `$opal_password` 
