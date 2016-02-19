@@ -177,12 +177,6 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
 
     if !(($mongodb) or ($remote_mongodb)) {
       if ($remote_mysql_ids){
-        ::mysql::db { 'opal_ids':
-          user     => 'opaluser',
-          password => 'opalpass',
-          host     => 'localhost',
-          grant    => ['ALL'],
-        } ->
         ::opal::database { '_identifiers':
           opal_password      => $opal_password,
           db_type            => 'mysql',
