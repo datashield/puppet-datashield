@@ -18,8 +18,23 @@
 # * `mysql`
 # If true install mysql on the datashield server
 #
+# * `mysql_root_password`
+# The root password for the MySQL install
+#
+# * `mysql_user`
+# The MySQL user for the opal data / id tables
+#
+# * `mysql_pass`
+# The MySQL user password for the opal data / id tables
+#
 # * `mongodb`
 # If true install mongodb on the datashield server, the _identifiers database will use mongodb by default
+#
+# * `mongodb_user`
+# The mongoDB root user name
+#
+# * `mongodb_pass`
+# The mongoDB root user name's password
 #
 # * `remote_mongodb`
 # If true use a remote mongodb database server datashield server
@@ -62,7 +77,9 @@
 # Neil Parley
 #
 
-class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
+class datashield ( $test_data=true, $firewall=true,
+  $mysql=true, $mysql_root_password='rootpass', $mysql_user='opaluser', $mysql_pass='opalpass',
+  $mongodb=true, $mongodb_user='opaluser', $mongodb_pass='opalpass',
   $remote_mongodb=false, $remote_mongodb_url='', $remote_mongodb_user='', $remote_mongodb_pass='',
   $remote_mysql=false, $remote_mysql_url='', $remote_mysql_user='', $remote_mysql_pass='',
   $opal_password='password', $opal_password_hash = '$shiro1$SHA-256$500000$dxucP0IgyO99rdL0Ltj1Qg==$qssS60kTC7TqE61/JFrX/OEk0jsZbYXjiGhR7/t+XNY=') {
@@ -130,14 +147,14 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
 
   if ($mysql) {
     class { ::mysql::server:
-      root_password    => 'rootpass',
+      root_password    => $mysql_root_password,
       override_options => { 'mysqld' => { 'default-storage-engine' => 'innodb',
         'character-set-server'                                     => 'utf8', } }
     }
 
     ::mysql::db { 'opal_data':
-      user     => 'opaluser',
-      password => 'opalpass',
+      user     => $mysql_user,
+      password => $mysql_pass,
       host     => 'localhost',
       grant    => ['ALL'],
     } ->
@@ -146,13 +163,13 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
       db_type            => 'mysql',
       usedForIdentifiers => false,
       url                => 'jdbc:mysql://localhost:3306/opal_data',
-      username           => 'opaluser',
-      password           => 'opalpass' }
+      username           => $mysql_user,
+      password           => $mysql_pass }
 
     if !(($mongodb) or ($remote_mongodb)) {
       ::mysql::db { 'opal_ids':
-        user     => 'opaluser',
-        password => 'opalpass',
+        user     => $mysql_user,
+        password => $mysql_pass,
         host     => 'localhost',
         grant    => ['ALL'],
       } ->
@@ -161,8 +178,8 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
         db_type            => 'mysql',
         usedForIdentifiers => true,
         url                => 'jdbc:mysql://localhost:3306/opal_ids',
-        username           => 'opaluser',
-        password           => 'opalpass' }
+        username           => $mysql_user,
+        password           => $mysql_pass }
     }
   }
 
@@ -189,20 +206,27 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
   }
 
   if ($mongodb) {
-    class { ::mongodb: } ->
+    class { ::mongodb:
+      username           => $mongodb_user,
+      password           => $mongodb_pass,
+    } ->
     ::opal::database { 'mongodb':
       opal_password      => $opal_password,
       db_type            => 'mongodb',
+      username           => $mongodb_user,
+      password           => $mongodb_pass,
       usedForIdentifiers => false,
       defaultStorage     => true,
-      url                => 'mongodb://localhost:27017/opal_data'
+      url                => 'mongodb://localhost:27017/opal_data?authSource=admin'
     } ->
     ::opal::database { '_identifiers':
       opal_password      => $opal_password,
       db_type            => 'mongodb',
+      username           => $mongodb_user,
+      password           => $mongodb_pass,
       usedForIdentifiers => true,
       defaultStorage     => false,
-      url                => 'mongodb://localhost:27017/opal_ids'
+      url                => 'mongodb://localhost:27017/opal_ids?authSource=admin'
     }
   }
 
@@ -214,7 +238,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
       password           => $remote_mongodb_pass,
       usedForIdentifiers => false,
       defaultStorage     => false,
-      url                => "mongodb://${remote_mongodb_url}/opal_data"
+      url                => "mongodb://${remote_mongodb_url}/opal_data?authSource=admin"
     }
 
     if ($remote_mongodb_ids) {
@@ -225,7 +249,7 @@ class datashield ( $test_data=true, $firewall=true, $mysql=true, $mongodb=true,
         password           => $remote_mongodb_pass,
         usedForIdentifiers => true,
         defaultStorage     => false,
-        url                => "mongodb://${remote_mongodb_url}/opal_ids"
+        url                => "mongodb://${remote_mongodb_url}/opal_ids?authSource=admin"
       }
     }
   }
