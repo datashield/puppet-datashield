@@ -55,16 +55,16 @@ class datashield::r ($opal_password = 'password', $server_side = true) {
   }
 
   if ($server_side){
-    ::datashield::server { 'dsBase':
+    datashield::server_package { 'dsBase':
       opal_password => $opal_password
     }
-    ::datashield::server { 'dsStats':
+    datashield::server_package { 'dsStats':
       opal_password => $opal_password
     }
-    ::datashield::server { 'dsGraphics':
+    datashield::server_package { 'dsGraphics':
       opal_password => $opal_password
     }
-    ::datashield::server { 'dsModelling':
+    datashield::server_package { 'dsModelling':
       opal_password => $opal_password
     }
   }

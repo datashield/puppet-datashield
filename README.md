@@ -127,10 +127,10 @@ Installs the datashield R packages and the R packages needed by datashield. `$op
 opal, needed to install the server side R packages. If `$server_side` is true then the server side R packages are installed
 if not only the client side packages will be installed.
 
-### datashield::server
+### datashield::server_package
 
 ```puppet
-define datashield::server($r_path = '/usr/bin/R', $opal_password = 'password', $opal_url='http://localhost:8080')
+define datashield::server_package($r_path = '/usr/bin/R', $opal_password = 'password', $opal_url='http://localhost:8080')
 ```
 Datashield server side R package resource. That is will install the the datashield R server side package of name `$name`.
 `$r_path` is the path to the R binary, the default is '/usr/bin/R'. `$opal_password` is the opal admin password, 

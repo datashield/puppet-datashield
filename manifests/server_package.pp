@@ -1,4 +1,4 @@
-# Type: datashield::server
+# Type: datashield::server_package
 # ===========================
 #
 # Installs R server side packages using opaladmin
@@ -20,7 +20,7 @@
 # --------
 #
 # @example
-#    ::datashield::server { 'dsBase':
+#    ::datashield::server_package { 'dsBase':
 #      opal_password => $opal_password
 #    }
 #
@@ -30,7 +30,7 @@
 # Neil Parley
 #
 
-define datashield::server($r_path = '/usr/bin/R', $opal_password = 'password', $opal_url='http://localhost:8080') {
+define datashield::server_package($r_path = '/usr/bin/R', $opal_password = 'password', $opal_url='http://localhost:8080') {
 
   include ::r
 
