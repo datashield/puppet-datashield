@@ -28,12 +28,28 @@ you could include the class as below:
 
 ```puppet
 class {'::datashield': 
-  test_data => false, 
-  firewall  => false, 
-  mysql     => true, 
-  mongodb   => false
+  test_data => false,                            # Don't install the test data
+  firewall  => false,                            # Don't install the firewall
+  mysql     => true,                             # Install mysql server
+  mongodb   => false                             # Don't install mongodb server
 }
 ```
+
+The passwords for the underlining MySQL and MongoDB servers installed can be changed by changing the import password 
+variables. For example:
+
+```puppet
+class { ::datashield:
+  mysql_root_password => 'rootpass',             # Root password for MySQL install
+  mysql_user          => 'opaluser',             # MySQL user for Opal table
+  mysql_pass          => 'opalpass',             # MySQL user passport for Opal table
+  mongodb_user        => 'opaluser',             # Username of root MongoDB user for MongoDB install
+  mongodb_pass        => 'opalpass',             # Password of root MongoDB user for MongoDB install
+}
+```
+
+Changing the variables above will change the MySQL root password, user name and password for the Opal MySQL tables, and
+the username and password for the root MongoDB user respectively. 
 
 The opal admin password can be changed by the datashield module, by default the module will keep the default opal 
 password. To change the password you can send the password and the password hash to the datashield module. 
@@ -53,13 +69,13 @@ with a remote mongodb server you could include the command:
 
 ```puppet
 class {'::datashield': 
-  test_data           => false, 
-  mysql               => false, 
-  mongodb             => false
-  remote_mongodb      => true, 
-  remote_mongodb_url  => 'mongodb_server.mydomain', 
-  remote_mongodb_user => 'mongodb_username', 
-  remote_mongodb_pass => 'mongodb_password',
+  test_data           => false,                         # Don't install the test data
+  mysql               => false,                         # Don't install mysql server
+  mongodb             => false                          # Don't install mongodb server
+  remote_mongodb      => true,                          # Connect to remote mongodb server
+  remote_mongodb_url  => 'mongodb_server.mydomain',     # Remote mongodb server url
+  remote_mongodb_user => 'mongodb_username',            # Username for remote mongodb server
+  remote_mongodb_pass => 'mongodb_password',            # Password for remote mongodb server
 }
 ```
 
