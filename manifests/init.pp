@@ -272,7 +272,7 @@ class datashield ( $test_data=true, $firewall=true,
       fail("No database for test data")
     }
 
-    if (mongodb) {
+    if ($test_db) {
       file { "/var/lib/opal/fs/home/administrator/testdata":
         alias   => 'testdata',
         ensure  => directory,
