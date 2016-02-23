@@ -41,14 +41,14 @@ variables. For example:
 ```puppet
 class { ::datashield:
   mysql_root_password => 'rootpass',             # Root password for MySQL install
-  mysql_user          => 'opaluser',             # MySQL user for Opal table
-  mysql_pass          => 'opalpass',             # MySQL user passport for Opal table
+  mysql_user          => 'opaluser',             # MySQL user for Opal databases
+  mysql_pass          => 'opalpass',             # MySQL user passport for Opal databases
   mongodb_user        => 'opaluser',             # Username of root MongoDB user for MongoDB install
   mongodb_pass        => 'opalpass',             # Password of root MongoDB user for MongoDB install
 }
 ```
 
-Changing the variables above will change the MySQL root password, user name and password for the Opal MySQL tables, and
+Changing the variables above will change the MySQL root password, user name and password for the Opal MySQL databases, and
 the username and password for the root MongoDB user respectively. 
 
 The opal admin password can be changed by the datashield module, by default the module will keep the default opal 
@@ -115,7 +115,7 @@ Creates a machine as a datashield server. `$test_data` is true to install the da
 installs a fireware on the server machine and only opens the ports required by datashield to operate. `$mysql` installs 
 a mysql database server on the machine, similarly `$mongodb` installs a mongodb server on the machine. For the MySQL 
 install there are `$mysql_root_password`, `$mysql_user` and `$mysql_pass` variables. These set the root MySQL password 
-and create a MySQL user / password for the MySQL opal tables creation. For the mongoDB install there are the variables 
+and create a MySQL user / password for the MySQL opal database creation. For the mongoDB install there are the variables 
 `$mongodb_user` and `$mongodb_pass`. These create a user with root access to the mongoDB database server. `$remote_mongodb`
 is true if there is a remote mongodb server that opal needs to connect to. `$remote_mongodb_url`, `$remote_mongodb_user`,
 `$remote_mongodb_pass` are then the URL, the username and the password of the remote database server. `$remote_mysql`,

@@ -22,10 +22,10 @@
 # The root password for the MySQL install
 #
 # * `mysql_user`
-# The MySQL user for the opal data / id tables
+# The MySQL user for the opal data / id databases
 #
 # * `mysql_pass`
-# The MySQL user password for the opal data / id tables
+# The MySQL user password for the opal data / id databases
 #
 # * `mongodb`
 # If true install mongodb on the datashield server, the _identifiers database will use mongodb by default
