@@ -69,13 +69,16 @@ with a remote mongodb server you could include the command:
 
 ```puppet
 class {'::datashield': 
-  test_data           => false,                         # Don't install the test data
-  mysql               => false,                         # Don't install mysql server
-  mongodb             => false                          # Don't install mongodb server
-  remote_mongodb      => true,                          # Connect to remote mongodb server
-  remote_mongodb_url  => 'mongodb_server.mydomain',     # Remote mongodb server url
-  remote_mongodb_user => 'mongodb_username',            # Username for remote mongodb server
-  remote_mongodb_pass => 'mongodb_password',            # Password for remote mongodb server
+  test_data                   => false,                         # Don't install the test data
+  mysql                       => false,                         # Don't install mysql server
+  mongodb                     => false                          # Don't install mongodb server
+  remote_mongodb              => true,                          # Connect to remote mongodb server
+  remote_mongodb_url          => 'mongodb_server.mydomain',     # Remote mongodb server url
+  remote_mongodb_user         => 'mongodb_username',            # Username for remote mongodb server
+  remote_mongodb_pass         => 'mongodb_password',            # Password for remote mongodb server
+  remote_mongodb_opal_data_db => 'opal_data',                   # Name of the database holding Opal data
+  remote_mongodb_opal_ids_db  => 'opal_ids',                    # Name of the database holding Opal IDs
+  remote_mongodb_auth_db      => 'admin',                       # Database for authenticating mongoDB user
 }
 ```
 
@@ -106,10 +109,14 @@ class {'::datashield::client':
 ```puppet
 class datashield ( $test_data=true, $firewall=true,
   $mysql=true, $mysql_root_password='rootpass', $mysql_user='opaluser', $mysql_pass='opalpass',
+  $mysql_opal_data_db='opal_data', $mysql_opal_ids_db='opal_ids',
   $mongodb=true, $mongodb_user='opaluser', $mongodb_pass='opalpass',
+  $mongodb_opal_data_db='opal_data', $mongodb_opal_ids_db='opal_ids',
   $remote_mongodb=false, $remote_mongodb_url='', $remote_mongodb_user='', $remote_mongodb_pass='',
+  $remote_mongodb_opal_data_db='opal_data', $remote_mongodb_opal_ids_db='opal_ids', $remote_mongodb_auth_db='admin',
   $remote_mysql=false, $remote_mysql_url='', $remote_mysql_user='', $remote_mysql_pass='',
-  $opal_password='password', $opal_password_hash = '$shiro1$SHA-256$500000$dxucP0IgyO99rdL0Ltj1Qg==$qssS60kTC7TqE61/JFrX/OEk0jsZbYXjiGhR7/t+XNY=') 
+  $remote_mysql_opal_data_db='opal_data', $remote_mysql_opal_ids_db='opal_ids',
+  $opal_password='password', $opal_password_hash = '$shiro1$SHA-256$500000$dxucP0IgyO99rdL0Ltj1Qg==$qssS60kTC7TqE61/JFrX/OEk0jsZbYXjiGhR7/t+XNY=')
 ```
 Creates a machine as a datashield server. `$test_data` is true to install the datashield test data with Opal. `$firewall` 
 installs a fireware on the server machine and only opens the ports required by datashield to operate. `$mysql` installs 
@@ -121,7 +128,9 @@ is true if there is a remote mongodb server that opal needs to connect to. `$rem
 `$remote_mongodb_pass` are then the URL, the username and the password of the remote database server. `$remote_mysql`,
 `$remote_mysql_url`, `$remote_mysql_user`, `$remote_mysql_pass` are the equivalent for a remote mysql server. `$opal_password` 
 and `$opal_password_hash` are the Opal admin password and password hash. See the Opal instructions for creating a password
-hash.
+hash. The name of the databases that hold the Opal data and the Opal IDs can be changed using the `$mongodb_opal_data_db`,
+`$mysql_opal_ids_db` etc. variables. By default the Opal data is stored in a database called `opal_data` and the Opal IDs 
+are stored in a database called `opal_ids`.
 
 ### datashield::client
 
