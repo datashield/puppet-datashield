@@ -62,10 +62,16 @@ class { '::datashield':
 ```
 
 4 different types of databases can be installed when setting up datashield. The identifier database and test data (if 
-being installed) will use the first in the subsequent list being used. `mongodb=true` will install a mongodb server,
-`mongodb_remote=true` will register a remote mongodb database with opal, `mysql=true` will install a mysql server and
-`mysql_remote=true` will register a remote mysql database server with opal. For example to use you datashield server
-with a remote mongodb server you could include the command:
+being installed) will use the first of the subsequent list being used. 
+
+* Local MongoDB database (`mongodb=true`)
+* Local MySQL database (`mysql=true`)
+* Remote MongoDB database (`mongodb_remote=true`)
+* Remote MySQL database (`mysql_remote=true`)
+
+`mongodb=true` will install a mongodb server, `mysql=true` will install a mysql server, `mongodb_remote=true` will register 
+a remote mongodb database with opal and `mysql_remote=true` will register a remote mysql database server with opal. For 
+example to use you datashield server with a remote mongodb server you could include the command:
 
 ```puppet
 class {'::datashield': 
@@ -79,6 +85,23 @@ class {'::datashield':
   remote_mongodb_opal_data_db => 'opal_data',                   # Name of the database holding Opal data
   remote_mongodb_opal_ids_db  => 'opal_ids',                    # Name of the database holding Opal IDs
   remote_mongodb_auth_db      => 'admin',                       # Database for authenticating mongoDB user
+}
+```
+
+The datashield module can also be used to provision a database server suitable for datashield with out installing Opal, 
+or datashield on the machine. For example:
+
+```puppet
+class {'::datashield::db_server':
+  firewall            => true,                   # Install firewall on server and open ports
+  local_only_access   => false,                  # Allow remote access to the databases
+  mysql               => true,                   # Install mysql server
+  mysql_root_password => 'rootpass',             # Root password for MySQL install
+  mysql_user          => 'opaluser',             # MySQL user for Opal databases
+  mysql_pass          => 'opalpass',             # MySQL user passport for Opal databases
+  mongodb             => true,                   # Install mongodb server
+  mongodb_user        => 'opaluser',             # Username of root MongoDB user for MongoDB install
+  mongodb_pass        => 'opalpass',             # Password of root MongoDB user for MongoDB install
 }
 ```
 
@@ -131,6 +154,22 @@ and `$opal_password_hash` are the Opal admin password and password hash. See the
 hash. The name of the databases that hold the Opal data and the Opal IDs can be changed using the `$mongodb_opal_data_db`,
 `$mysql_opal_ids_db` etc. variables. By default the Opal data is stored in a database called `opal_data` and the Opal IDs 
 are stored in a database called `opal_ids`.
+
+### datashield::db_server
+
+```puppet
+class datashield::db_server ($firewall=true, $local_only_access=true,
+  $mysql=true, $mysql_root_password='rootpass', $mysql_user='opaluser', $mysql_pass='opalpass',
+  $mysql_opal_data_db='opal_data', $mysql_opal_ids_db='opal_ids',
+  $mongodb=true, $mongodb_user='opaluser', $mongodb_pass='opalpass',
+  $mongodb_opal_data_db='opal_data', $mongodb_opal_ids_db='opal_ids') 
+```
+This installs the MongoDB and MySQL database servers on the machine and sets up the tables needed for Opal. The variables 
+are used as described above in the `::datashield` reference. The `datashield::db_server` module can be used to provision 
+a database server with out installing Opal, for example to use as a remote database server. `$local_only_access` defines 
+if the server should only allow access to the databases from localhost, if the variable is false then remote connections 
+will be allowed. If `$local_only_access` is false and `$firewall` is true then a firewall will be turned on and the ports
+for MySQL and MongoDB will be opened. 
 
 ### datashield::client
 

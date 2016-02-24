@@ -176,41 +176,41 @@ class datashield ( $test_data=true, $firewall=true,
     }
   }
 
-  if ($mysql) {
-    class { ::mysql::server:
-      root_password    => $mysql_root_password,
-      override_options => { 'mysqld' => { 'default-storage-engine' => 'innodb',
-        'character-set-server'                                     => 'utf8', } }
-    }
+  class { datashield::db_server:
+    mysql                => $mysql,
+    mysql_root_password  => $mysql_root_password,
+    mysql_user           => $mysql_user,
+    mysql_pass           => $mysql_pass,
+    mysql_opal_data_db   => $mysql_opal_data_db,
+    mysql_opal_ids_db    => $mysql_opal_ids_db,
+    mongodb              => $mongodb,
+    mongodb_user         => $mongodb_user,
+    mongodb_pass         => $mongodb_pass,
+    mongodb_opal_data_db => $mongodb_opal_data_db,
+    mongodb_opal_ids_db  => $mongodb_opal_ids_db,
+  }
 
-    ::mysql::db { $mysql_opal_data_db:
-      user     => $mysql_user,
-      password => $mysql_pass,
-      host     => 'localhost',
-      grant    => ['ALL'],
-    } ->
+  if ($mysql) {
     ::opal::database { 'sqldb':
       opal_password      => $opal_password,
       db_type            => 'mysql',
       usedForIdentifiers => false,
       url                => "jdbc:mysql://localhost:3306/${mysql_opal_data_db}",
       username           => $mysql_user,
-      password           => $mysql_pass }
-
-    if !(($mongodb) or ($remote_mongodb)) {
-      ::mysql::db { $mysql_opal_ids_db:
-        user     => $mysql_user,
-        password => $mysql_pass,
-        host     => 'localhost',
-        grant    => ['ALL'],
-      } ->
+      password           => $mysql_pass,
+      require            => Class[datashield::db_server]
+    }
+    # If no MongoDB use MySQL for IDs
+    if !($mongodb) {
       ::opal::database { '_identifiers':
         opal_password      => $opal_password,
         db_type            => 'mysql',
         usedForIdentifiers => true,
         url                => "jdbc:mysql://localhost:3306/${mysql_opal_ids_db}",
         username           => $mysql_user,
-        password           => $mysql_pass }
+        password           => $mysql_pass,
+        require            => Class[datashield::db_server]
+      }
     }
   }
 
@@ -223,24 +223,21 @@ class datashield ( $test_data=true, $firewall=true,
       username           => $remote_mysql_user,
       password           => $remote_mysql_pass }
 
-    if !(($mongodb) or ($remote_mongodb)) {
-      if ($remote_mysql_ids){
-        ::opal::database { '_identifiers':
-          opal_password      => $opal_password,
-          db_type            => 'mysql',
-          usedForIdentifiers => true,
-          url                => "jdbc:mysql://${remote_mysql_url}/${remote_mysql_opal_ids_db}",
-          username           => $remote_mysql_user,
-          password           => $remote_mysql_pass }
-      }
+    # mongodb == False -> Means no local MongoDB installed
+    # remote_mongodb_ids == False -> thus means no remote mongoDB installed
+    # remote_mysql_ids == True -> means no local MySQL installed
+    if (!($remote_mongodb_ids) and !($mongodb) and ($remote_mysql_ids)) {
+      ::opal::database { '_identifiers':
+        opal_password      => $opal_password,
+        db_type            => 'mysql',
+        usedForIdentifiers => true,
+        url                => "jdbc:mysql://${remote_mysql_url}/${remote_mysql_opal_ids_db}",
+        username           => $remote_mysql_user,
+        password           => $remote_mysql_pass }
     }
   }
 
   if ($mongodb) {
-    class { ::mongodb:
-      username           => $mongodb_user,
-      password           => $mongodb_pass,
-    } ->
     ::opal::database { 'mongodb':
       opal_password      => $opal_password,
       db_type            => 'mongodb',
@@ -248,8 +245,9 @@ class datashield ( $test_data=true, $firewall=true,
       password           => $mongodb_pass,
       usedForIdentifiers => false,
       defaultStorage     => true,
-      url                => "mongodb://localhost:27017/${mongodb_opal_data_db}?authSource=admin"
-    } ->
+      url                => "mongodb://localhost:27017/${mongodb_opal_data_db}?authSource=admin",
+      require            => Class[datashield::db_server]
+    } -> # Use MongoDB by default
     ::opal::database { '_identifiers':
       opal_password      => $opal_password,
       db_type            => 'mongodb',
@@ -257,7 +255,8 @@ class datashield ( $test_data=true, $firewall=true,
       password           => $mongodb_pass,
       usedForIdentifiers => true,
       defaultStorage     => false,
-      url                => "mongodb://localhost:27017/${mongodb_opal_ids_db}?authSource=admin"
+      url                => "mongodb://localhost:27017/${mongodb_opal_ids_db}?authSource=admin",
+      require            => Class[datashield::db_server]
     }
   }
 
@@ -271,8 +270,8 @@ class datashield ( $test_data=true, $firewall=true,
       defaultStorage     => false,
       url                => "mongodb://${remote_mongodb_url}/${remote_mongodb_opal_data_db}?authSource=${remote_mongodb_auth_db}"
     }
-
-    if ($remote_mongodb_ids) {
+    # If $remote_mongodb_ids == True then local mongodb not installed. If $mysql == False then local MySQL not installed.
+    if (($remote_mongodb_ids) and !($mysql)) {
       ::opal::database { '_identifiers':
         opal_password      => $opal_password,
         db_type            => 'mongodb',
@@ -287,14 +286,15 @@ class datashield ( $test_data=true, $firewall=true,
 
   if ($test_data) {
 
+    # Put test data in the first of Local MongoDB, Local MySQL, Remote MongoDB, Remote MySQL
     if ($mongodb) and !($test_db){
       $test_db = "mongodb"
     }
-    if ($remote_mongodb) and !($test_db){
-      $test_db = "mongodb_remote"
-    }
     if ($mysql) and !($test_db){
       $test_db = "sqldb"
+    }
+    if ($remote_mongodb) and !($test_db){
+      $test_db = "mongodb_remote"
     }
     if ($remote_mysql) and !($test_db){
       $test_db = "sqldb_remote"
