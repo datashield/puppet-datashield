@@ -113,16 +113,34 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
   }
 
   if ($mysql) {
-    class { ::mysql::server:
-      root_password    => $mysql_root_password,
-      override_options => { 'mysqld' => { 'default-storage-engine' => 'innodb',
-        'character-set-server'                                     => 'utf8', } }
+
+    if ($local_only_access){
+      $grant_host = 'localhost'
+      class { ::mysql::server:
+        restart          => true,
+        root_password    => $mysql_root_password,
+        override_options => { 'mysqld' =>
+        { 'default-storage-engine'  => 'innodb',
+          'character-set-server'    => 'utf8', }
+        }
+      }
+    } else {
+      $grant_host = '%'
+      class { ::mysql::server:
+        restart          => true,
+        root_password    => $mysql_root_password,
+        override_options => { 'mysqld' =>
+        { 'default-storage-engine'  => 'innodb',
+          'character-set-server'    => 'utf8',
+          'bind-address'            => '*' }
+        }
+      }
     }
 
     ::mysql::db { $mysql_opal_data_db:
       user     => $mysql_user,
       password => $mysql_pass,
-      host     => 'localhost',
+      host     => $grant_host,
       grant    => ['ALL'],
     }
 
@@ -130,7 +148,7 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
       ::mysql::db { $mysql_opal_ids_db:
         user     => $mysql_user,
         password => $mysql_pass,
-        host     => 'localhost',
+        host     => $grant_host,
         grant    => ['ALL'],
       }
     }
