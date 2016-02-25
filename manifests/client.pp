@@ -12,6 +12,12 @@
 # * `agate`
 # If true will install agate on the machine and open the firewall ports for it
 #
+# * `mongodb_user`
+# Username of root mongodb user for the Mongodb server needed by agate
+#
+# * `mongodb_pass`
+# Password of root mongodb user for the Mongodb server needed by agate
+#
 # * `firewall`
 # If true, turn on firewall and allow ports for ssh and rstudio
 #
@@ -48,6 +54,7 @@
 # 'https://github.com/nparley/puppet-opal'
 # 'https://github.com/nparley/puppet-r'
 # 'https://github.com/nparley/puppet-datashield'
+# 'https://github.com/nparley/puppet-mongodb'
 #
 # Authors
 # -------
@@ -55,8 +62,8 @@
 # Neil Parley
 #
 
-class datashield::client ($rstudio = true, $firewall = true, $agate=true,
-  $create_user = true, $user_name = 'datashield', $password_hash = 'mrtyHtvJlH8D2'){
+class datashield::client ($rstudio = true, $firewall = true, $agate=true, $mongodb_user='opaluser',
+  $mongodb_pass='opalpass', $create_user = true, $user_name = 'datashield', $password_hash = 'mrtyHtvJlH8D2'){
 
   include ::firewall
 
@@ -111,16 +118,38 @@ class datashield::client ($rstudio = true, $firewall = true, $agate=true,
   }
 
   if ($agate) {
-    class { ::datashield::packages::openjdk:
+    class { datashield::packages::openjdk:
       notify => Package['agate']
+    }
+    class { datashield::db_server:
+      mysql                => false,
+      mongodb              => true,
+      mongodb_user         => $mongodb_user,
+      mongodb_pass         => $mongodb_pass,
     }
     class { opal::repository: } ->
     package { 'agate':
       ensure  => latest,
-      require => Class[::datashield::packages::openjdk]
+      require => [Class[::datashield::packages::openjdk], Class[datashield::db_server]]
     } ->
     package { 'agate-python-client':
       ensure  => latest,
+    }
+    file_line { 'agate_mongo_username':
+      ensure  => present,
+      path    => '/var/lib/agate/conf/application.yml',
+      line    => "    username: $mongodb_user",
+      match   => '^/ / / / username:',
+      require => Package['agate'],
+      notify  => Service['agate'],
+    }
+    file_line { 'agate_mongo_password':
+      ensure  => present,
+      path    => '/var/lib/agate/conf/application.yml',
+      line    => "    password: $mongodb_pass",
+      match   => '^/ / / / password:',
+      require => Package['agate'],
+      notify  => Service['agate'],
     }
     service { 'agate':
       ensure    => running,
