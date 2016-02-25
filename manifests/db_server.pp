@@ -40,12 +40,6 @@
 # * `mongodb_pass`
 # The mongoDB root user name's password
 #
-# * `mongodb_opal_data_db`
-# The name of the database to hold the opal data for the MongoDB install
-#
-# * `mongodb_opal_ids_db`
-# The name of the database to hold the opal ids for the MongoDB install
-#
 # Examples
 # --------
 #
@@ -76,8 +70,7 @@
 class datashield::db_server ($firewall=true, $local_only_access=true,
   $mysql=true, $mysql_root_password='rootpass', $mysql_user='opaluser', $mysql_pass='opalpass',
   $mysql_opal_data_db='opal_data', $mysql_opal_ids_db='opal_ids',
-  $mongodb=true, $mongodb_user='opaluser', $mongodb_pass='opalpass',
-  $mongodb_opal_data_db='opal_data', $mongodb_opal_ids_db='opal_ids') {
+  $mongodb=true, $mongodb_user='opaluser', $mongodb_pass='opalpass') {
 
   include ::firewall
 

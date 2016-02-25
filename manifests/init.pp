@@ -201,9 +201,7 @@ class datashield ( $test_data=true, $firewall=true,
     mysql_opal_ids_db    => $mysql_opal_ids_db,
     mongodb              => $mongodb,
     mongodb_user         => $mongodb_user,
-    mongodb_pass         => $mongodb_pass,
-    mongodb_opal_data_db => $mongodb_opal_data_db,
-    mongodb_opal_ids_db  => $mongodb_opal_ids_db,
+    mongodb_pass         => $mongodb_pass
   }
 
   if ($mysql) {
