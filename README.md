@@ -161,14 +161,14 @@ are stored in a database called `opal_ids`.
 class datashield::db_server ($firewall=true, $local_only_access=true,
   $mysql=true, $mysql_root_password='rootpass', $mysql_user='opaluser', $mysql_pass='opalpass',
   $mysql_opal_data_db='opal_data', $mysql_opal_ids_db='opal_ids',
-  $mongodb=true, $mongodb_user='opaluser', $mongodb_pass='opalpass') 
+  $mongodb=true, $mongodb_user='opaluser', $mongodb_pass='opalpass', $mongodb_authentication_database='admin')
 ```
 This installs the MongoDB and MySQL database servers on the machine and sets up the tables needed for Opal. The variables 
 are used as described above in the `::datashield` reference. The `datashield::db_server` module can be used to provision 
 a database server with out installing Opal, for example to use as a remote database server. `$local_only_access` defines 
 if the server should only allow access to the databases from localhost, if the variable is false then remote connections 
 will be allowed. If `$local_only_access` is false and `$firewall` is true then a firewall will be turned on and the ports
-for MySQL and MongoDB will be opened. 
+for MySQL and MongoDB will be opened. `$authentication_database` is the database that mongoDB will use for user authentication.
 
 ### datashield::client
 

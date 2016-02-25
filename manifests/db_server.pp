@@ -40,6 +40,9 @@
 # * `mongodb_pass`
 # The mongoDB root user name's password
 #
+# * `authentication_database`
+# Database used for authentication for mongoDB server
+#
 # Examples
 # --------
 #
@@ -70,7 +73,7 @@
 class datashield::db_server ($firewall=true, $local_only_access=true,
   $mysql=true, $mysql_root_password='rootpass', $mysql_user='opaluser', $mysql_pass='opalpass',
   $mysql_opal_data_db='opal_data', $mysql_opal_ids_db='opal_ids',
-  $mongodb=true, $mongodb_user='opaluser', $mongodb_pass='opalpass') {
+  $mongodb=true, $mongodb_user='opaluser', $mongodb_pass='opalpass', $mongodb_authentication_database='admin') {
 
   include ::firewall
 
@@ -162,9 +165,10 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
 
   if ($mongodb) {
     class { ::mongodb:
-      local_only_access => $local_only_access,
-      username          => $mongodb_user,
-      password          => $mongodb_pass,
+      local_only_access       => $local_only_access,
+      username                => $mongodb_user,
+      password                => $mongodb_pass,
+      authentication_database => $mongodb_authentication_database,
     }
   }
 }
