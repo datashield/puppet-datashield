@@ -94,14 +94,14 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
     }
 
     if ($mysql) {
-      firewall { "915 accept mysql ports":
+      firewall { "330 accept mysql ports":
         proto      => "tcp",
         dport      => [3306],
         action     => "accept",
       }
     }
     if ($mongodb) {
-      firewall { "916 accept mongodb ports":
+      firewall { "270 accept mongodb ports":
         proto      => "tcp",
         dport      => [27017, 28017],
         action     => "accept",
