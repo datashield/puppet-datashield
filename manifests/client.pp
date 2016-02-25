@@ -66,6 +66,7 @@ class datashield::client ($rstudio = true, $firewall = true, $agate=true, $mongo
   $mongodb_pass='opalpass', $create_user = true, $user_name = 'datashield', $password_hash = 'mrtyHtvJlH8D2'){
 
   include ::firewall
+  include stdlib
 
   class { ::datashield::r:
     server_side => false
@@ -126,7 +127,6 @@ class datashield::client ($rstudio = true, $firewall = true, $agate=true, $mongo
       mongodb                         => true,
       mongodb_user                    => $mongodb_user,
       mongodb_pass                    => $mongodb_pass,
-      mongodb_authentication_database => 'agate',
     }
     class { opal::repository: } ->
     package { 'agate':
@@ -140,7 +140,7 @@ class datashield::client ($rstudio = true, $firewall = true, $agate=true, $mongo
       ensure  => present,
       path    => '/var/lib/agate/conf/application.yml',
       line    => "    username: $mongodb_user",
-      match   => '^/ / / / username:',
+      match   => '^\ \ \ \ username:',
       require => Package['agate'],
       notify  => Service['agate'],
     }
@@ -148,7 +148,7 @@ class datashield::client ($rstudio = true, $firewall = true, $agate=true, $mongo
       ensure  => present,
       path    => '/var/lib/agate/conf/application.yml',
       line    => "    password: $mongodb_pass",
-      match   => '^/ / / / password:',
+      match   => '^\ \ \ \ password:',
       require => Package['agate'],
       notify  => Service['agate'],
     }
