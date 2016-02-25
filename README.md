@@ -161,8 +161,7 @@ are stored in a database called `opal_ids`.
 class datashield::db_server ($firewall=true, $local_only_access=true,
   $mysql=true, $mysql_root_password='rootpass', $mysql_user='opaluser', $mysql_pass='opalpass',
   $mysql_opal_data_db='opal_data', $mysql_opal_ids_db='opal_ids',
-  $mongodb=true, $mongodb_user='opaluser', $mongodb_pass='opalpass',
-  $mongodb_opal_data_db='opal_data', $mongodb_opal_ids_db='opal_ids') 
+  $mongodb=true, $mongodb_user='opaluser', $mongodb_pass='opalpass') 
 ```
 This installs the MongoDB and MySQL database servers on the machine and sets up the tables needed for Opal. The variables 
 are used as described above in the `::datashield` reference. The `datashield::db_server` module can be used to provision 
@@ -174,14 +173,16 @@ for MySQL and MongoDB will be opened.
 ### datashield::client
 
 ```puppet
-class datashield::client ($rstudio = true, $firewall = true, $agate=true,
-  $create_user = true, $user_name = 'datashield', $password_hash = 'mrtyHtvJlH8D2')
+class datashield::client ($rstudio = true, $firewall = true, $agate=true, $mongodb_user='opaluser', 
+  $mongodb_pass='opalpass', $create_user = true, $user_name = 'datashield', $password_hash = 'mrtyHtvJlH8D2')
 ```
 Creates a machine as a datashield client. `$rstudio` is true if rstudio is to be installed on the client machine. If `$agate`
-is true the client machine will have the Obiba user management software Agate installed. `firewall` is true if the machine 
-should have a firewall install, blocking all ports but those needed to communicate to rstudio. `$user_name` and 
-`$password_hash` are the default user and password hash to set up on the machine for logging into rstudio, 
-this user is created if `$create_user` is true, if not it is assumed that user management is being done in another file.
+is true the client machine will have the Obiba user management software Agate installed. Agate requires a mongoDB database 
+so setting `$agate` to true will also install a MongoDB database server. `$mongodb_user` and `$mongodb_pass` are thus the 
+username and password of the root user of this mongoDB install. `firewall` is true if the machine should have a firewall 
+install, blocking all ports but those needed to communicate to rstudio. `$user_name` and `$password_hash` are the default 
+user and password hash to set up on the machine for logging into rstudio, this user is created if `$create_user` is true, 
+if not it is assumed that user management is being done in another file.
   
 ### datashield::r
 
