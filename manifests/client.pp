@@ -33,6 +33,22 @@
 #      firewall => true,
 #    }
 #
+# Requires
+# -------
+#
+# 'puppetlabs/stdlib', '4.9.0'
+# 'puppetlabs/apt', '2.2.0'
+# 'stahnma/epel', '1.1.1'
+# 'nanliu/staging', '1.0.3'
+# 'adrien/alternatives', '0.3.0'
+# 'puppetlabs/firewall', '1.7.2'
+# 'basti1302/wait_for', '0.3.0'
+# 'cpick/gdebi', '0.1.1'
+# 'maestrodev/wget', '1.7.1'
+# 'https://github.com/nparley/puppet-opal'
+# 'https://github.com/nparley/puppet-r'
+# 'https://github.com/nparley/puppet-datashield'
+#
 # Authors
 # -------
 #

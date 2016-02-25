@@ -54,6 +54,19 @@
 #      mysql => true,
 #    }
 #
+# Requires
+# -------
+#
+# 'puppetlabs/stdlib', '4.9.0'
+# 'puppetlabs/apt', '2.2.0'
+# 'stahnma/epel', '1.1.1'
+# 'nanliu/staging', '1.0.3'
+# 'puppetlabs/mysql', '3.6.1'
+# 'adrien/alternatives', '0.3.0'
+# 'puppetlabs/firewall', '1.7.2'
+# 'https://github.com/nparley/puppet-datashield'
+# 'https://github.com/nparley/puppet-mongodb'
+#
 # Authors
 # -------
 #
