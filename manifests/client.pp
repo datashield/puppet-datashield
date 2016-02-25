@@ -122,10 +122,11 @@ class datashield::client ($rstudio = true, $firewall = true, $agate=true, $mongo
       notify => Package['agate']
     }
     class { datashield::db_server:
-      mysql                => false,
-      mongodb              => true,
-      mongodb_user         => $mongodb_user,
-      mongodb_pass         => $mongodb_pass,
+      mysql                   => false,
+      mongodb                 => true,
+      mongodb_user            => $mongodb_user,
+      mongodb_pass            => $mongodb_pass,
+      authentication_database => 'agate',
     }
     class { opal::repository: } ->
     package { 'agate':
