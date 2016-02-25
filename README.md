@@ -174,13 +174,14 @@ for MySQL and MongoDB will be opened.
 ### datashield::client
 
 ```puppet
-class datashield::client ($rstudio = true, $firewall = true,
+class datashield::client ($rstudio = true, $firewall = true, $agate=true,
   $create_user = true, $user_name = 'datashield', $password_hash = 'mrtyHtvJlH8D2')
 ```
-Creates a machine as a datashield client. `$rstudio` is true if rstudio is to be installed on the client machine. `firewall`
-is true if the machine should have a firewall install, blocking all ports but those needed to communicate to rstudio. 
- `$user_name` and `$password_hash` is the default user and password hash to set up on the machine for logging into rstudio,
- this user is created if `$create_user` is true, if not it is assumed that user management is being done in another file.
+Creates a machine as a datashield client. `$rstudio` is true if rstudio is to be installed on the client machine. If `$agate`
+is true the client machine will have the Obiba user management software Agate installed. `firewall` is true if the machine 
+should have a firewall install, blocking all ports but those needed to communicate to rstudio. `$user_name` and 
+`$password_hash` are the default user and password hash to set up on the machine for logging into rstudio, 
+this user is created if `$create_user` is true, if not it is assumed that user management is being done in another file.
   
 ### datashield::r
 

@@ -9,6 +9,9 @@
 # * `rstudio`
 # Install rstudio on the client
 #
+# * `agate`
+# If true will install agate on the machine and open the firewall ports for it
+#
 # * `firewall`
 # If true, turn on firewall and allow ports for ssh and rstudio
 #
@@ -36,7 +39,7 @@
 # Neil Parley
 #
 
-class datashield::client ($rstudio = true, $firewall = true,
+class datashield::client ($rstudio = true, $firewall = true, $agate=true,
   $create_user = true, $user_name = 'datashield', $password_hash = 'mrtyHtvJlH8D2'){
 
   include ::firewall
@@ -70,6 +73,14 @@ class datashield::client ($rstudio = true, $firewall = true,
       action  => accept,
     }
 
+    if ($agate){
+      firewall { "901 accept agate ports":
+        proto      => "tcp",
+        dport      => [8081, 8444],
+        action     => "accept",
+      }
+    }
+
     if ($rstudio) {
       firewall { "900 accept rstudio ports":
         proto      => "tcp",
@@ -80,6 +91,25 @@ class datashield::client ($rstudio = true, $firewall = true,
 
     firewall { '999 drop all other requests':
       action => 'drop',
+    }
+  }
+
+  if ($agate) {
+    class { ::datashield::packages::openjdk:
+      notify => Package['agate']
+    }
+    class { opal::repository: } ->
+    package { 'agate':
+      ensure  => latest,
+      require => Class[::datashield::packages::openjdk]
+    } ->
+    package { 'agate-python-client':
+      ensure  => latest,
+    }
+    service { 'agate':
+      ensure    => running,
+      enable    => true,
+      subscribe => Package['agate']
     }
   }
 
