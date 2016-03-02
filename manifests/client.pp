@@ -51,10 +51,10 @@
 # 'basti1302/wait_for', '0.3.0'
 # 'cpick/gdebi', '0.1.1'
 # 'maestrodev/wget', '1.7.1'
-# 'https://github.com/nparley/puppet-opal'
-# 'https://github.com/nparley/puppet-r'
-# 'https://github.com/nparley/puppet-datashield'
-# 'https://github.com/nparley/puppet-mongodb'
+# 'https://github.com/datashield/puppet-opal'
+# 'https://github.com/datashield/puppet-r'
+# 'https://github.com/datashield/puppet-datashield'
+# 'https://github.com/datashield/puppet-mongodb'
 #
 # Authors
 # -------

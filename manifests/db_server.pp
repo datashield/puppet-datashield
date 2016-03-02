@@ -61,8 +61,8 @@
 # 'puppetlabs/mysql', '3.6.1'
 # 'adrien/alternatives', '0.3.0'
 # 'puppetlabs/firewall', '1.7.2'
-# 'https://github.com/nparley/puppet-datashield'
-# 'https://github.com/nparley/puppet-mongodb'
+# 'https://github.com/datashield/puppet-datashield'
+# 'https://github.com/datashield/puppet-mongodb'
 #
 # Authors
 # -------
