@@ -139,6 +139,7 @@ class datashield ( $test_data=true, $firewall=true,
   $remote_mongodb_opal_data_db='opal_data', $remote_mongodb_opal_ids_db='opal_ids', $remote_mongodb_auth_db='admin',
   $remote_mysql=false, $remote_mysql_url='', $remote_mysql_user='', $remote_mysql_pass='',
   $remote_mysql_opal_data_db='opal_data', $remote_mysql_opal_ids_db='opal_ids',
+  $opal_release = 'stable',
   $opal_password='password', $opal_password_hash = '$shiro1$SHA-256$500000$dxucP0IgyO99rdL0Ltj1Qg==$qssS60kTC7TqE61/JFrX/OEk0jsZbYXjiGhR7/t+XNY=')
 ```
 Creates a machine as a datashield server. `$test_data` is true to install the datashield test data with Opal. `$firewall` 
@@ -153,7 +154,8 @@ is true if there is a remote mongodb server that opal needs to connect to. `$rem
 and `$opal_password_hash` are the Opal admin password and password hash. See the Opal instructions for creating a password
 hash. The name of the databases that hold the Opal data and the Opal IDs can be changed using the `$mongodb_opal_data_db`,
 `$mysql_opal_ids_db` etc. variables. By default the Opal data is stored in a database called `opal_data` and the Opal IDs 
-are stored in a database called `opal_ids`.
+are stored in a database called `opal_ids`. `$opal_release` can be changed to change the release version of Opal which is
+installed from the package repo, default is stable.
 
 ### datashield::db_server
 

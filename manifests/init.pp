@@ -12,6 +12,9 @@
 # * `opal_password_hash`
 # The opal admin password hash to set the opal admin password
 #
+# * `opal_release`
+# Relase branch of the opal to be installed from the package repo. Default is 'stable'
+#
 # * `firewall`
 # If true, turn on firewall and allow ports for Opal and datashield to be openned.
 #
@@ -129,6 +132,7 @@ class datashield ( $test_data=true, $firewall=true,
   $remote_mongodb_opal_data_db='opal_data', $remote_mongodb_opal_ids_db='opal_ids', $remote_mongodb_auth_db='admin',
   $remote_mysql=false, $remote_mysql_url='', $remote_mysql_user='', $remote_mysql_pass='',
   $remote_mysql_opal_data_db='opal_data', $remote_mysql_opal_ids_db='opal_ids',
+  $opal_release = 'stable',
   $opal_password='password', $opal_password_hash = '$shiro1$SHA-256$500000$dxucP0IgyO99rdL0Ltj1Qg==$qssS60kTC7TqE61/JFrX/OEk0jsZbYXjiGhR7/t+XNY=') {
 
   $remote_mongodb_ids = $remote_mongodb
@@ -149,7 +153,8 @@ class datashield ( $test_data=true, $firewall=true,
   }
   class { ::opal:
     opal_password      => $opal_password,
-    opal_password_hash => $opal_password_hash
+    opal_password_hash => $opal_password_hash,
+    opal_release       => $opal_release
   }
 
   class { ::datashield::packages::openjdk:
