@@ -88,6 +88,16 @@ class {'::datashield':
 }
 ```
 
+By default Opal will be installed from the *stable* branch on the Obiba repo and the Datashield server side packages will 
+install from the *master* branch. These can be change using the variables below:
+ 
+```puppet
+class {'::datashield':
+  opal_release         => 'stable',              # The release version of Opal to install.
+  r_server_package_ref => 'master'               # Reference (branch) to use for server side R packages
+}
+```
+
 The datashield module can also be used to provision a database server suitable for datashield with out installing Opal, 
 or datashield on the machine. For example:
 
@@ -139,7 +149,7 @@ class datashield ( $test_data=true, $firewall=true,
   $remote_mongodb_opal_data_db='opal_data', $remote_mongodb_opal_ids_db='opal_ids', $remote_mongodb_auth_db='admin',
   $remote_mysql=false, $remote_mysql_url='', $remote_mysql_user='', $remote_mysql_pass='',
   $remote_mysql_opal_data_db='opal_data', $remote_mysql_opal_ids_db='opal_ids',
-  $opal_release = 'stable',
+  $opal_release = 'stable', $r_server_package_ref='master', 
   $opal_password='password', $opal_password_hash = '$shiro1$SHA-256$500000$dxucP0IgyO99rdL0Ltj1Qg==$qssS60kTC7TqE61/JFrX/OEk0jsZbYXjiGhR7/t+XNY=')
 ```
 Creates a machine as a datashield server. `$test_data` is true to install the datashield test data with Opal. `$firewall` 
@@ -155,7 +165,8 @@ and `$opal_password_hash` are the Opal admin password and password hash. See the
 hash. The name of the databases that hold the Opal data and the Opal IDs can be changed using the `$mongodb_opal_data_db`,
 `$mysql_opal_ids_db` etc. variables. By default the Opal data is stored in a database called `opal_data` and the Opal IDs 
 are stored in a database called `opal_ids`. `$opal_release` can be changed to change the release version of Opal which is
-installed from the package repo, default is stable.
+installed from the package repo, default is stable. `$r_server_package_ref` is the reference i.e. the branch to use for the
+R server side package install, default is 'master'.
 
 ### datashield::db_server
 
@@ -189,20 +200,23 @@ if not it is assumed that user management is being done in another file.
 ### datashield::r
 
 ```puppet
-class datashield::r ($opal_password = 'password', $server_side = true)
+class datashield::r ($opal_password = 'password', $server_side = true, $server_ref = 'master')
 ```
 Installs the datashield R packages and the R packages needed by datashield. `$opal_password` is the admin password for
 opal, needed to install the server side R packages. If `$server_side` is true then the server side R packages are installed
-if not only the client side packages will be installed.
+if not only the client side packages will be installed. `$server_ref` is the reference (i.e. branch) to use for the R 
+server side packages.
 
 ### datashield::server_package
 
 ```puppet
-define datashield::server_package($r_path = '/usr/bin/R', $opal_password = 'password', $opal_url='http://localhost:8080')
+define datashield::server_package($r_path = '/usr/bin/R', $opal_password = 'password', $opal_url='http://localhost:8080',
+  $ref='master') 
 ```
 Datashield server side R package resource. That is will install the the datashield R server side package of name `$name`.
 `$r_path` is the path to the R binary, the default is '/usr/bin/R'. `$opal_password` is the opal admin password, 
-`$opal_url` is the url of the Opal REST server, default is 'http://localhost:8080'.
+`$opal_url` is the url of the Opal REST server, default is 'http://localhost:8080'. `$ref` sets the reference (from the
+github repo) of the server side package you are installing, default is master. 
 
 ### datashield::packages::libcurl
 

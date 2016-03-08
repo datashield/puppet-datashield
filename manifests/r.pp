@@ -12,6 +12,8 @@
 # * `server_side`
 # If true (defualt) datashield server and client R packages are install, if false just client packages are installed
 #
+# * `server_ref`
+# The reference to use for the server side R packages, default is 'master'
 #
 # Examples
 # --------
@@ -27,7 +29,7 @@
 # Neil Parley
 #
 
-class datashield::r ($opal_password = 'password', $server_side = true) {
+class datashield::r ($opal_password = 'password', $server_side = true, $server_ref = 'master') {
   include datashield::packages::libcurl
   include datashield::packages::libxml
   include datashield::packages::openssl
@@ -56,16 +58,20 @@ class datashield::r ($opal_password = 'password', $server_side = true) {
 
   if ($server_side){
     datashield::server_package { 'dsBase':
-      opal_password => $opal_password
+      opal_password => $opal_password,
+      ref           => $server_ref
     }
     datashield::server_package { 'dsStats':
-      opal_password => $opal_password
+      opal_password => $opal_password,
+      ref           => $server_ref
     }
     datashield::server_package { 'dsGraphics':
-      opal_password => $opal_password
+      opal_password => $opal_password,
+      ref           => $server_ref
     }
     datashield::server_package { 'dsModelling':
-      opal_password => $opal_password
+      opal_password => $opal_password,
+      ref           => $server_ref
     }
   }
 }
