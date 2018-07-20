@@ -310,7 +310,7 @@ class datashield ( $test_data=true, $firewall=true,
   if ($test_data) {
 
     # Put test data in the first of Local MongoDB, Local MySQL, Remote MongoDB, Remote MySQL
-    if ($mongodb) and !($test_db){
+    if ($mongodb){
       $test_db = "mongodb"
     }
     if ($mysql) and !($test_db){
