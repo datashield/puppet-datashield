@@ -36,14 +36,14 @@ class datashield::packages::rstudio($create_user = true, $user_name = 'datashiel
     'Ubuntu': {
 
       include gdebi
-      wget::fetch { 'https://download2.rstudio.org/rstudio-server-0.99.491-amd64.deb':
-        destination => '/tmp/rstudio-server-0.99.491-amd64.deb',
+      wget::fetch { 'https://download2.rstudio.org/rstudio-server-1.1.456-amd64.deb':
+        destination => '/tmp/rstudio-server-1.1.456-amd64.deb',
         timeout     => 0,
         verbose     => false,
       } ->
-      package { 'rstudio-server-0.99.491-amd64.deb':
+      package { 'rstudio-server-1.1.456-amd64.deb':
         ensure   => 'installed',
-        source   => '/tmp/rstudio-server-0.99.491-amd64.deb',
+        source   => '/tmp/rstudio-server-1.1.456-amd64.deb',
         provider => 'gdebi',
         require  => Class['::r'],
         alias    => 'rstudio',
@@ -54,7 +54,7 @@ class datashield::packages::rstudio($create_user = true, $user_name = 'datashiel
     'Centos': {
       package { 'rstudio-server':
         ensure   => 'installed',
-        source   => 'https://download2.rstudio.org/rstudio-server-rhel-0.99.491-x86_64.rpm',
+        source   => 'https://download2.rstudio.org/rstudio-server-rhel-1.1.456-x86_64.rpm',
         provider => 'rpm',
         require  => Class['::r'],
         alias    => 'rstudio',
