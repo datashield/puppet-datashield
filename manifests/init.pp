@@ -351,26 +351,26 @@ class datashield ( $test_data=true, $firewall=true,
         require       => File['testdata']
       }
 
-      ::opal::project { 'DASIM':
-        opal_password => $opal_password,
-        database      => $test_db,
-        description   => "Simulated data",
-      } ->
-      ::opal::data { 'DASIM':
-        opal_password => $opal_password,
-        path          => '/home/administrator/testdata/DASIM/DASIM.zip',
-        require       => File['testdata']
-      }
+#      ::opal::project { 'DASIM':
+#        opal_password => $opal_password,
+#        database      => $test_db,
+#        description   => "Simulated data",
+#      } ->
+#      ::opal::data { 'DASIM':
+#        opal_password => $opal_password,
+#        path          => '/home/administrator/testdata/DASIM/DASIM.zip',
+#        require       => File['testdata']
+#      }
 
-      ::opal::project { 'SURVIVAL':
-        opal_password => $opal_password,
-        database      => $test_db,
-        description   => "Simulated data",
-      } ->
-      ::opal::data { 'SURVIVAL':
-        opal_password => $opal_password,
-        path          => '/home/administrator/testdata/SURVIVAL/SURVIVAL.zip',
-        require       => File['testdata']
+#      ::opal::project { 'SURVIVAL':
+#        opal_password => $opal_password,
+#        database      => $test_db,
+#        description   => "Simulated data",
+#      } ->
+#      ::opal::data { 'SURVIVAL':
+#        opal_password => $opal_password,
+#        path          => '/home/administrator/testdata/SURVIVAL/SURVIVAL.zip',
+#        require       => File['testdata']
       }
     }
 
