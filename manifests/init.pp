@@ -371,7 +371,7 @@ class datashield ( $test_data=true, $firewall=true,
 #        opal_password => $opal_password,
 #        path          => '/home/administrator/testdata/SURVIVAL/SURVIVAL.zip',
 #        require       => File['testdata']
-      }
+#      }
     }
 
   }
