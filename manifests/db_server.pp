@@ -149,7 +149,6 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
     ::mysql::db { $mysql_opal_data_db:
       user     => $mysql_user,
       password => $mysql_pass,
-      root_password    => $mysql_root_password,
       host     => $grant_host,
       grant    => ['ALL'],
     }
@@ -158,7 +157,6 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
       ::mysql::db { $mysql_opal_ids_db:
         user     => $mysql_user,
         password => $mysql_pass,
-        root_password    => $mysql_root_password,
         host     => $grant_host,
         grant    => ['ALL'],
       }
