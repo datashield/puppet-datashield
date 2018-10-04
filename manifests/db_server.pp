@@ -122,7 +122,7 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
   }
 
   if ($mysql) {
-
+    notify {"Selected up with mysql":}
     if ($local_only_access){
       $grant_host = 'localhost'
       class { ::mysql::server:
@@ -133,6 +133,7 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
           'character-set-server'    => 'utf8', }
         }
       }
+      notify {"Setting up with mysql server ${mysql_root_password}":}
     } else {
       $grant_host = '%'
       class { ::mysql::server:
