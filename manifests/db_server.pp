@@ -132,7 +132,7 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
         override_options => { 'mysqld' =>
         { 'default-storage-engine'  => 'innodb',
           'character-set-server'    => 'utf8',
-          'bind-address'            => 'localhost', }
+          'remove_default_accounts' => true, }
         }
       }
       notify { "Mysql server: Done": }
@@ -144,6 +144,7 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
         override_options => { 'mysqld' =>
         { 'default-storage-engine'  => 'innodb',
           'character-set-server'    => 'utf8',
+          'remove_default_accounts' => true,
           'bind-address'            => '*' }
         }
       }
