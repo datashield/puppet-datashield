@@ -127,30 +127,26 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
       $grant_host = 'localhost'
       notify { "About to setup with mysql server: root password ${mysql_root_password}": }
       class { ::mysql::server:
-#        restart                 => true,
-        root_password           => $mysql_root_password,
-        remove_default_accounts => true,
-        create_root_user        => true,
-        create_root_my_cnf      => true,
+        restart          => true,
+        root_password    => $mysql_root_password,
         override_options => { 'mysqld' =>
         { 'default-storage-engine'  => 'innodb',
           'character-set-server'    => 'utf8', }
-        }
+        },
+        require => Package['mysql-server']
       }
       notify { "Mysql server: Done": }
     } else {
       $grant_host = '%'
       class { ::mysql::server:
-#        restart                 => true,
-        root_password           => $mysql_root_password,
-        remove_default_accounts => true,
-        create_root_user        => true,
-        create_root_my_cnf      => true,
+        restart          => true,
+        root_password    => $mysql_root_password,
         override_options => { 'mysqld' =>
         { 'default-storage-engine'  => 'innodb',
           'character-set-server'    => 'utf8',
           'bind-address'            => '*', }
-        }
+        },
+        require => Package['mysql-server']
       }
     }
 
