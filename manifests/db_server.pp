@@ -131,7 +131,7 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
         root_password           => $mysql_root_password,
         remove_default_accounts => true,
         create_root_user        => true,
-        create_root_my_cnf      -> true,
+        create_root_my_cnf      => true,
         override_options => { 'mysqld' =>
         { 'default-storage-engine'  => 'innodb',
           'character-set-server'    => 'utf8', }
@@ -145,7 +145,7 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
         root_password           => $mysql_root_password,
         remove_default_accounts => true,
         create_root_user        => true,
-        create_root_my_cnf      -> true,
+        create_root_my_cnf      => true,
         override_options => { 'mysqld' =>
         { 'default-storage-engine'  => 'innodb',
           'character-set-server'    => 'utf8',
