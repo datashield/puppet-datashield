@@ -121,21 +121,22 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
     }
   }
 
-  if ($mysql) {
-    notify { "Selected with mysql": }
+if ($mysql) {
+    package { 'mysql-server':
+        require => Exec['apt-update'],
+        ensure => installed,
+    }
+
     if ($local_only_access){
       $grant_host = 'localhost'
-      notify { "About to setup with mysql server: root password ${mysql_root_password}": }
       class { ::mysql::server:
         restart          => true,
         root_password    => $mysql_root_password,
         override_options => { 'mysqld' =>
         { 'default-storage-engine'  => 'innodb',
           'character-set-server'    => 'utf8', }
-        },
-        require => Package['mysql-server']
+        }
       }
-      notify { "Mysql server: Done": }
     } else {
       $grant_host = '%'
       class { ::mysql::server:
@@ -145,8 +146,7 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
         { 'default-storage-engine'  => 'innodb',
           'character-set-server'    => 'utf8',
           'bind-address'            => '*', }
-        },
-        require => Package['mysql-server']
+        }
       }
     }
 
