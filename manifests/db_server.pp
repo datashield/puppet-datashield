@@ -127,7 +127,7 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
       $grant_host = 'localhost'
       notify { "About to setup with mysql server: root password ${mysql_root_password}": }
       class { ::mysql::server:
-        restart                 => true,
+#        restart                 => true,
         root_password           => $mysql_root_password,
         remove_default_accounts => true,
         create_root_user        => true,
@@ -141,7 +141,7 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
     } else {
       $grant_host = '%'
       class { ::mysql::server:
-        restart                 => true,
+#        restart                 => true,
         root_password           => $mysql_root_password,
         remove_default_accounts => true,
         create_root_user        => true,
