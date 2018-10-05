@@ -131,7 +131,8 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
         root_password    => $mysql_root_password,
         override_options => { 'mysqld' =>
         { 'default-storage-engine'  => 'innodb',
-          'character-set-server'    => 'utf8', }
+          'character-set-server'    => 'utf8',
+          'bind-address'            => 'localhost', }
         }
       }
       notify { "Mysql server: Done": }
