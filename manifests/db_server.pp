@@ -121,12 +121,7 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
     }
   }
 
-if ($mysql) {
-    package { 'mysql-server':
-        require => Exec['apt-update'],
-        ensure => installed,
-    }
-
+  if ($mysql) {
     if ($local_only_access){
       $grant_host = 'localhost'
       class { ::mysql::server:
