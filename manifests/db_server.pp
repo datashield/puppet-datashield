@@ -71,7 +71,7 @@
 #
 
 class datashield::db_server ($firewall=true, $local_only_access=true,
-  $mysql=true, $mysql_root_password='rootpass', $mysql_user='opaluser', $mysql_pass='opalpass',
+  $mysql=true, $mysql_root_password='root', $mysql_user='opaluser', $mysql_pass='opalpass',
   $mysql_opal_data_db='opal_data', $mysql_opal_ids_db='opal_ids',
   $mongodb=true, $mongodb_user='opaluser', $mongodb_pass='opalpass', $mongodb_authentication_database='admin') {
 
