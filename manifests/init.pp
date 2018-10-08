@@ -127,7 +127,7 @@
 #
 
 class datashield ( $test_data=true, $firewall=true,
-  $mysql=true, $mysql_root_password='rootpass', $mysql_user='opaluser', $mysql_pass='opalpass',
+  $mysql=true, $mysql_root_password='root', $mysql_user='opaluser', $mysql_pass='opalpass',
   $mysql_opal_data_db='opal_data', $mysql_opal_ids_db='opal_ids',
   $mongodb=true, $mongodb_user='opaluser', $mongodb_pass='opalpass',
   $mongodb_opal_data_db='opal_data', $mongodb_opal_ids_db='opal_ids',
