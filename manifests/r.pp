@@ -29,7 +29,7 @@
 # Neil Parley
 #
 
-class datashield::r ($opal_password = 'password', $server_side = true, $server_ref = 'master') {
+class datashield::r ($opal_password = 'password', $server_side = true, $server_githubusername = 'datashield', $server_ref = 'master') {
   include datashield::packages::libcurl
   include datashield::packages::libxml
   include datashield::packages::openssl
@@ -58,20 +58,24 @@ class datashield::r ($opal_password = 'password', $server_side = true, $server_r
 
   if ($server_side){
     datashield::server_package { 'dsBase':
-      opal_password => $opal_password,
-      ref           => $server_ref
+      opal_password  => $opal_password,
+      githubusername => $server_githubusername,
+      ref            => $server_ref
     }
     datashield::server_package { 'dsStats':
-      opal_password => $opal_password,
-      ref           => $server_ref
+      opal_password  => $opal_password,
+      githubusername => $server_githubusername,
+      ref            => $server_ref
     }
     datashield::server_package { 'dsGraphics':
-      opal_password => $opal_password,
-      ref           => $server_ref
+      opal_password  => $opal_password,
+      githubusername => $server_githubusername,
+      ref            => $server_ref
     }
     datashield::server_package { 'dsModelling':
-      opal_password => $opal_password,
-      ref           => $server_ref
+      opal_password  => $opal_password,
+      githubusername => $server_githubusername,
+      ref            => $server_ref
     }
   }
 }
