@@ -127,7 +127,7 @@
 #
 
 class datashield ( $test_data=true, $firewall=true,
-  $mysql=true, $mysql_root_password='root', $mysql_user='opaluser', $mysql_pass='opalpass',
+  $mysql=true, $mysql_root_password='rootpass', $mysql_user='opaluser', $mysql_pass='opalpass',
   $mysql_opal_data_db='opal_data', $mysql_opal_ids_db='opal_ids',
   $mongodb=true, $mongodb_user='opaluser', $mongodb_pass='opalpass',
   $mongodb_opal_data_db='opal_data', $mongodb_opal_ids_db='opal_ids',
@@ -310,7 +310,7 @@ class datashield ( $test_data=true, $firewall=true,
   if ($test_data) {
 
     # Put test data in the first of Local MongoDB, Local MySQL, Remote MongoDB, Remote MySQL
-    if ($mongodb){
+    if ($mongodb) and !($test_db){
       $test_db = "mongodb"
     }
     if ($mysql) and !($test_db){
@@ -351,27 +351,27 @@ class datashield ( $test_data=true, $firewall=true,
         require       => File['testdata']
       }
 
-#      ::opal::project { 'DASIM':
-#        opal_password => $opal_password,
-#        database      => $test_db,
-#        description   => "Simulated data",
-#      } ->
-#      ::opal::data { 'DASIM':
-#        opal_password => $opal_password,
-#        path          => '/home/administrator/testdata/DASIM/DASIM.zip',
-#        require       => File['testdata']
-#      }
+      ::opal::project { 'DASIM':
+        opal_password => $opal_password,
+        database      => $test_db,
+        description   => "Simulated data",
+      } ->
+      ::opal::data { 'DASIM':
+        opal_password => $opal_password,
+        path          => '/home/administrator/testdata/DASIM/DASIM.zip',
+        require       => File['testdata']
+      }
 
-#      ::opal::project { 'SURVIVAL':
-#        opal_password => $opal_password,
-#        database      => $test_db,
-#        description   => "Simulated data",
-#      } ->
-#      ::opal::data { 'SURVIVAL':
-#        opal_password => $opal_password,
-#        path          => '/home/administrator/testdata/SURVIVAL/SURVIVAL.zip',
-#        require       => File['testdata']
-#      }
+      ::opal::project { 'SURVIVAL':
+        opal_password => $opal_password,
+        database      => $test_db,
+        description   => "Simulated data",
+      } ->
+      ::opal::data { 'SURVIVAL':
+        opal_password => $opal_password,
+        path          => '/home/administrator/testdata/SURVIVAL/SURVIVAL.zip',
+        require       => File['testdata']
+      }
     }
 
   }
