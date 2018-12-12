@@ -4,9 +4,9 @@
   "author": "Neil Parley",
   "summary": "Puppet module for installing Datashield",
   "license": "Apache-2.0",
-  "source": "https://github.com/StuartWheater/puppet-datashield",
-  "project_page": "https://github.com/StuartWheater/puppet-datashield",
-  "issues_url": "https://github.com/StuartWheater/puppet-datashield/issues",
+  "source": "https://github.com/datashield/puppet-datashield",
+  "project_page": "https://github.com/datashield/puppet-datashield",
+  "issues_url": "https://github.com/datashield/puppet-datashield/issues",
   "dependencies": [
     {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
   ],
