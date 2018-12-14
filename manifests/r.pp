@@ -29,7 +29,11 @@
 # Neil Parley
 #
 
-class datashield::r ($opal_password = 'password', $server_side = true, $server_githubusername = 'datashield', $server_ref = 'master') {
+class datashield::r ($opal_password = 'password', $server_side = true,
+                     $dsbase_githubusername = 'datashield', $dsbase_ref = 'master',
+                     $dsstats_githubusername = 'datashield', $dsstats_ref = 'master',
+                     $dsgraphics_githubusername = 'datashield', $dsgraphics_ref = 'master',
+                     $dsmodelling_githubusername = 'datashield', $dsmodelling_ref = 'master') {
   include datashield::packages::libcurl
   include datashield::packages::libxml
   include datashield::packages::openssl
@@ -59,23 +63,23 @@ class datashield::r ($opal_password = 'password', $server_side = true, $server_g
   if ($server_side){
     datashield::server_package { 'dsBase':
       opal_password  => $opal_password,
-      githubusername => $server_githubusername,
-      ref            => $server_ref
+      githubusername => $dsbase_githubusername,
+      ref            => $dsbase_ref
     }
     datashield::server_package { 'dsStats':
       opal_password  => $opal_password,
-      githubusername => $server_githubusername,
-      ref            => $server_ref
+      githubusername => $dsstats_githubusername,
+      ref            => $dsstats_ref
     }
     datashield::server_package { 'dsGraphics':
       opal_password  => $opal_password,
-      githubusername => $server_githubusername,
-      ref            => $server_ref
+      githubusername => $dsgraphics_githubusername,
+      ref            => $dsgraphics_ref
     }
     datashield::server_package { 'dsModelling':
       opal_password  => $opal_password,
-      githubusername => $server_githubusername,
-      ref            => $server_ref
+      githubusername => $dsmodelling_githubusername,
+      ref            => $dsmodelling_ref
     }
   }
 }
