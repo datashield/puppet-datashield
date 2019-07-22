@@ -412,6 +412,17 @@ class datashield ( $test_data=true, $firewall=true,
         path          => '/home/administrator/testdata/TESTING/TESTING.zip',
         require       => File['testdata']
       }
+
+      ::opal::project { 'DISCORDANT':
+        opal_password => $opal_password,
+        database      => $test_db,
+        description   => "Simulated data",
+      } ->
+      ::opal::data { 'DISCORDANT':
+        opal_password => $opal_password,
+        path          => '/home/administrator/testdata/DISCORDANT/DISCORDANT.zip',
+        require       => File['testdata']
+      }
     }
 
   }
