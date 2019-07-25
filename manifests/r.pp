@@ -64,25 +64,33 @@ class datashield::r ($opal_password = 'password', $server_side = true,
   }
 
   if ($server_side){
-    datashield::server_package { 'dsBase':
-      opal_password  => $opal_password,
-      githubusername => $dsbase_githubusername,
-      ref            => $dsbase_ref
+    if ($dsbase_ref != ''){
+      datashield::server_package { 'dsBase':
+        opal_password  => $opal_password,
+        githubusername => $dsbase_githubusername,
+        ref            => $dsbase_ref
+      }
     }
-    datashield::server_package { 'dsStats':
-      opal_password  => $opal_password,
-      githubusername => $dsstats_githubusername,
-      ref            => $dsstats_ref
+    if ($dsstats_ref != ''){
+      datashield::server_package { 'dsStats':
+        opal_password  => $opal_password,
+        githubusername => $dsstats_githubusername,
+        ref            => $dsstats_ref
+      }
     }
-    datashield::server_package { 'dsGraphics':
-      opal_password  => $opal_password,
-      githubusername => $dsgraphics_githubusername,
-      ref            => $dsgraphics_ref
+    if ($dsgraphics_ref != ''){
+      datashield::server_package { 'dsGraphics':
+        opal_password  => $opal_password,
+        githubusername => $dsgraphics_githubusername,
+        ref            => $dsgraphics_ref
+      }
     }
-    datashield::server_package { 'dsModelling':
-      opal_password  => $opal_password,
-      githubusername => $dsmodelling_githubusername,
-      ref            => $dsmodelling_ref
+    if ($dsmodelling_ref != ''){
+      datashield::server_package { 'dsModelling':
+        opal_password  => $opal_password,
+        githubusername => $dsmodelling_githubusername,
+        ref            => $dsmodelling_ref
+      }
     }
   }
 }
