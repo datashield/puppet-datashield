@@ -59,6 +59,9 @@ class datashield::r ($opal_password = 'password', $server_side = true,
   ::r::package { 'testthat':
     dependencies => true,
   }
+  ::r::package { 'readr':
+    dependencies => true,
+  }
   ::r::package { 'RANN':
     dependencies => true,
   }
