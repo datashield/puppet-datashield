@@ -36,7 +36,7 @@ class datashield::packages::rstudio($create_user = true, $user_name = 'datashiel
     'Ubuntu': {
 
       include gdebi
-      wget::fetch { 'https://download2.rstudio.org/rstudio-server-1.2.1335-amd64.deb':
+      wget::fetch { 'https://download2.rstudio.org/server/trusty/amd64/rstudio-server-1.2.1335-amd64.deb':
         destination => '/tmp/rstudio-server-1.2.1335-amd64.deb',
         timeout     => 0,
         verbose     => false,
@@ -54,7 +54,7 @@ class datashield::packages::rstudio($create_user = true, $user_name = 'datashiel
     'Centos': {
       package { 'rstudio-server':
         ensure   => 'installed',
-        source   => 'https://download2.rstudio.org/rstudio-server-rhel-1.2.1335-x86_64.rpm',
+        source   => 'https://download2.rstudio.org/server/centos6/x86_64/rstudio-server-rhel-1.2.1335-x86_64.rpm',
         provider => 'rpm',
         require  => Class['::r'],
         alias    => 'rstudio',
