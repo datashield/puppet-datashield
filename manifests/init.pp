@@ -413,6 +413,17 @@ class datashield ( $test_data=true, $firewall=true,
         require       => File['testdata']
       }
 
+      ::opal::project { 'TESTING_GROUP':
+        opal_password => $opal_password,
+        database      => $test_db,
+        description   => "Simulated data",
+      } ->
+      ::opal::data { 'TESTING_GROUP':
+        opal_password => $opal_password,
+        path          => '/home/administrator/testdata/TESTING_GROUP/TESTING_GROUP.zip',
+        require       => File['testdata']
+      }
+
       ::opal::project { 'DISCORDANT':
         opal_password => $opal_password,
         database      => $test_db,
@@ -421,6 +432,17 @@ class datashield ( $test_data=true, $firewall=true,
       ::opal::data { 'DISCORDANT':
         opal_password => $opal_password,
         path          => '/home/administrator/testdata/DISCORDANT/DISCORDANT.zip',
+        require       => File['testdata']
+      }
+
+      ::opal::project { 'CLUSTER':
+        opal_password => $opal_password,
+        database      => $test_db,
+        description   => "Simulated data",
+      } ->
+      ::opal::data { 'CLUSTER':
+        opal_password => $opal_password,
+        path          => '/home/administrator/testdata/CLUSTER/CLUSTER.zip',
         require       => File['testdata']
       }
     }
