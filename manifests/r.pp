@@ -40,7 +40,7 @@ class datashield::r ($opal_password = 'password', $server_side = true,
   include ::r
 
   Class['datashield::packages::libxml', 'datashield::packages::openssl'] ->
-  ::r::package { 'opaladmin':
+  ::r::package { 'opalr':
     repo         => ['http://cran.obiba.org', 'http://cran.rstudio.com'],
     dependencies => true,
     require      => Class['::r'],
