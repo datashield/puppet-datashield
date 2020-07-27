@@ -99,24 +99,12 @@
 # * `dsbase_ref`
 # Branch name associated with the 'dsBase' package in github.
 # 
-# * `dsstats_githubusername`
-# User account associated with the 'dsStats' package in github.
+# * `dsdanger_githubusername`
+# User account associated with the 'dsDanger' package in github.
 #
-# * `dsstats_ref`
-# Branch name associated with the 'dsStats' package in github.
+# * `dsdanger_ref`
+# Branch name associated with the 'dsDanger' package in github.
 #
-# * `dsgraphics_githubusername`
-# User account associated with the 'dsGraphics' package in github.
-#
-# * `dsgraphics_ref`
-# Branch name associated with the 'dsGraphics' package in github.
-#
-# * `dsmodelling_githubusername`
-# User account associated with the 'dsModelling' package in github.
-#
-# * `dsmodelling_ref`
-# Branch name associated with the 'dsModelling' package in github.
-# 
 # Examples
 # --------
 #
@@ -157,8 +145,7 @@ class datashield ( $test_data=true, $firewall=true,
   $remote_mysql=false, $remote_mysql_url='', $remote_mysql_user='', $remote_mysql_pass='',
   $remote_mysql_opal_data_db='opal_data', $remote_mysql_opal_ids_db='opal_ids', $opal_release = 'stable',
   $opal_password='password', $opal_password_hash = '$shiro1$SHA-256$500000$dxucP0IgyO99rdL0Ltj1Qg==$qssS60kTC7TqE61/JFrX/OEk0jsZbYXjiGhR7/t+XNY=',
-  $dsbase_githubusername = 'datashield', $dsbase_ref = 'master', $dsstats_githubusername = 'datashield', $dsstats_ref = 'master',
-  $dsgraphics_githubusername = 'datashield', $dsgraphics_ref = 'master', $dsmodelling_githubusername = 'datashield', $dsmodelling_ref = 'master') {
+  $dsbase_githubusername = 'datashield', $dsbase_ref = 'master', $dsdanger_githubusername = 'datashield', $dsdanger_ref = 'master') {
 
   $remote_mongodb_ids = $remote_mongodb
   $remote_mysql_ids = $remote_mysql
@@ -177,12 +164,8 @@ class datashield ( $test_data=true, $firewall=true,
     require                    => Class['::opal::install'],
     dsbase_githubusername      => $dsbase_githubusername,
     dsbase_ref                 => $dsbase_ref,
-    dsstats_githubusername     => $dsstats_githubusername,
-    dsstats_ref                => $dsstats_ref,
-    dsgraphics_githubusername  => $dsgraphics_githubusername,
-    dsgraphics_ref             => $dsgraphics_ref,
-    dsmodelling_githubusername => $dsmodelling_githubusername,
-    dsmodelling_ref            => $dsmodelling_ref
+    dsdanger_githubusername    => $dsdanger_githubusername,
+    dsdanger_ref               => $dsdanger_ref
   }
   class { ::opal:
     opal_password      => $opal_password,
