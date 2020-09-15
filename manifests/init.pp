@@ -428,6 +428,18 @@ class datashield ( $test_data=true, $firewall=true,
         path          => '/home/administrator/testdata/CLUSTER/CLUSTER.zip',
         require       => File['testdata']
       }
+
+      ::opal::project { 'ANTHRO':
+        opal_password => $opal_password,
+        database      => $test_db,
+        description   => "Simulated data",
+      } ->
+      ::opal::data { 'ANTHRO':
+        opal_password => $opal_password,
+        path          => '/home/administrator/testdata/ANTHRO/ANTHRO.zip',
+        require       => File['testdata']
+      }
+
     }
 
   }
