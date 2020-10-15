@@ -53,10 +53,26 @@ class datashield::r ($opal_password = 'password', $server_side = true,
   ::r::package { 'testthat':
     dependencies => true,
   }
-  ::r::package { 'readr':
+
+  ::r::package { 'RANN':
     dependencies => true,
   }
-  ::r::package { 'RANN':
+  ::r::package { 'nlme':
+    dependencies => true,
+  }
+  ::r::package { 'stringr':
+    dependencies => true,
+  }
+  ::r::package { 'lme4':
+    dependencies => true,
+  }
+  ::r::package { 'ggplot2':
+    dependencies => true,
+  }
+  ::r::package { 'dplyr':
+    dependencies => true,
+  }
+  ::r::package { 'reshape2':
     dependencies => true,
   }
 
