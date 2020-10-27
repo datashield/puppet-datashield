@@ -200,7 +200,7 @@ if not it is assumed that user management is being done in another file.
 ### datashield::r
 
 ```puppet
-class datashield::r ($opal_password = 'password', $server_side = true, $server_ref = 'master')
+class datashield::r ($opal_password = 'password', $server_side = true, $server_githubusername = 'datashield', $server_ref = 'master')
 ```
 Installs the datashield R packages and the R packages needed by datashield. `$opal_password` is the admin password for
 opal, needed to install the server side R packages. If `$server_side` is true then the server side R packages are installed

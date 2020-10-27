@@ -29,49 +29,70 @@
 # Neil Parley
 #
 
-class datashield::r ($opal_password = 'password', $server_side = true, $server_ref = 'master') {
+class datashield::r ($opal_password = 'password', $server_side = true,
+                     $dsbase_githubusername = 'datashield', $dsbase_ref = 'master',
+                     $dsdanger_githubusername = 'datashield', $dsdanger_ref = 'master') {
   include datashield::packages::libcurl
   include datashield::packages::libxml
   include datashield::packages::openssl
   include ::r
 
-  Class['datashield::packages::libcurl'] ->
-  ::r::package { 'datashieldclient':
-    repo         => ['http://cran.obiba.org', 'http://cran.rstudio.com'],
-    dependencies => true,
-    require      => Class['::r'],
-  }
-
   Class['datashield::packages::libxml', 'datashield::packages::openssl'] ->
-  ::r::package { 'opaladmin':
+  ::r::package { 'opalr':
     repo         => ['http://cran.obiba.org', 'http://cran.rstudio.com'],
     dependencies => true,
     require      => Class['::r'],
   }
 
+  ::r::package { 'Rserve':
+    dependencies => true,
+  }
   ::r::package { 'devtools':
     dependencies => true,
   }
   ::r::package { 'testthat':
     dependencies => true,
   }
+  ::r::package { 'readr':
+    dependencies => true,
+  }
+
+  ::r::package { 'RANN':
+    dependencies => true,
+  }
+  ::r::package { 'nlme':
+    dependencies => true,
+  }
+  ::r::package { 'stringr':
+    dependencies => true,
+  }
+  ::r::package { 'lme4':
+    dependencies => true,
+  }
+  ::r::package { 'ggplot2':
+    dependencies => true,
+  }
+  ::r::package { 'dplyr':
+    dependencies => true,
+  }
+  ::r::package { 'reshape2':
+    dependencies => true,
+  }
 
   if ($server_side){
-    datashield::server_package { 'dsBase':
-      opal_password => $opal_password,
-      ref           => $server_ref
+    if ($dsbase_ref != ''){
+      datashield::server_package { 'dsBase':
+        opal_password  => $opal_password,
+        githubusername => $dsbase_githubusername,
+        ref            => $dsbase_ref
+      }
     }
-    datashield::server_package { 'dsStats':
-      opal_password => $opal_password,
-      ref           => $server_ref
-    }
-    datashield::server_package { 'dsGraphics':
-      opal_password => $opal_password,
-      ref           => $server_ref
-    }
-    datashield::server_package { 'dsModelling':
-      opal_password => $opal_password,
-      ref           => $server_ref
+    if ($dsdanger_ref != ''){
+      datashield::server_package { 'dsDanger':
+        opal_password  => $opal_password,
+        githubusername => $dsdanger_githubusername,
+        ref            => $dsdanger_ref
+      }
     }
   }
 }
