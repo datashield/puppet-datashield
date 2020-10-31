@@ -78,6 +78,9 @@ class datashield::r ($opal_password = 'password', $server_side = true,
   ::r::package { 'reshape2':
     dependencies => true,
   }
+  ::r::package { 'lspline':
+    dependencies => true,
+  }
 
   if ($server_side){
     if ($dsbase_ref != ''){
