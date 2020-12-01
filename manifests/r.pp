@@ -69,13 +69,13 @@ class datashield::r ($opal_password = 'password', $server_side = true,
   ::r::package { 'lme4':
     dependencies => true,
   }
-  ::r::package { 'ggplot2':
-    dependencies => true,
-  }
   ::r::package { 'dplyr':
     dependencies => true,
   }
   ::r::package { 'reshape2':
+    dependencies => true,
+  }
+  ::r::package { 'panelaggregation':
     dependencies => true,
   }
 
