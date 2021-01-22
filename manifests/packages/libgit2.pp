@@ -21,7 +21,7 @@ class datashield::packages::libgit2 {
   case $::operatingsystem {
     'Ubuntu': {
       include ::apt
-      package { 'software-properties-common':
+      package { 'software-properties-libgit2':
         ensure  => 'present'
       } ->
       apt::ppa { 'ppa:/cran/libgit2':
