@@ -35,11 +35,20 @@ class datashield::r ($opal_password = 'password', $server_side = true,
   include datashield::packages::libcurl
   include datashield::packages::libxml
   include datashield::packages::openssl
+  include datashield::packages::libmagickpp
   include datashield::packages::libfontconfig1
+  include datashield::packages::libfreetype6
+  include datashield::packages::libpng
+  include datashield::packages::libtiff5
+  include datashield::packages::libjpeg
+  include datashield::packages::libfribidi
+  include datashield::packages::libharfbuzz
   include datashield::packages::libgit2
   include ::r
 
-  Class['datashield::packages::libxml', 'datashield::packages::openssl', 'datashield::packages::libfontconfig1', 'datashield::packages::libgit2'] ->
+  Class['datashield::packages::libxml', 'datashield::packages::openssl', 'datashield::packages::libmagickpp', 'datashield::packages::libfontconfig1', 'datashield::packages::libfreetype6',
+        'datashield::packages::libpng', 'datashield::packages::libtiff5', 'datashield::packages::libjpeg', 'datashield::packages::libfribidi', 'datashield::packages::libharfbuzz', 
+        'datashield::packages::libgit2'] ->
   ::r::package { 'opalr':
     repo         => ['http://cran.obiba.org', 'http://cran.rstudio.com'],
     dependencies => true,
@@ -47,6 +56,15 @@ class datashield::r ($opal_password = 'password', $server_side = true,
   }
 
   ::r::package { 'Rserve':
+    dependencies => true,
+  }
+  ::r::package { 'credentials':
+    dependencies => true,
+  }
+  ::r::package { 'gert':
+    dependencies => true,
+  }
+  ::r::package { 'usethis':
     dependencies => true,
   }
   ::r::package { 'devtools':
