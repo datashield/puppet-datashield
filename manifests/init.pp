@@ -440,6 +440,17 @@ class datashield ( $test_data=true, $firewall=true,
         require       => File['testdata']
       }
 
+      ::opal::project { 'MEDIATION':
+        opal_password => $opal_password,
+        database      => $test_db,
+        description   => "Simulated data",
+      } ->
+      ::opal::data { 'MEDIATION':
+        opal_password => $opal_password,
+        path          => '/home/administrator/testdata/MEDIATION/MEDIATION.zip',
+        require       => File['testdata']
+      }
+
     }
 
   }
