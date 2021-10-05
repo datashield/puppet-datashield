@@ -24,10 +24,10 @@ class datashield::packages::openjdk {
       package { 'software-properties-common':
         ensure  => 'present'
       } ->
-      apt::ppa { 'ppa:openjdk-r/ppa':
-        notify => Class['apt::update'],
-      }
-      ->
+#      apt::ppa { 'ppa:openjdk-r/ppa':
+#        notify => Class['apt::update'],
+#      }
+#      ->
       package { 'openjdk-8-jre':
         ensure  => 'present',
         require =>  Class['apt::update'],
