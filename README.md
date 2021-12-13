@@ -210,12 +210,12 @@ server side packages.
 ### datashield::server_package
 
 ```puppet
-define datashield::server_package($r_path = '/usr/bin/R', $opal_password = 'password', $opal_url='http://localhost:8080',
+define datashield::server_package($r_path = '/usr/bin/R', $opal_password = 'password', $opal_url='https://localhost:8443',
   $ref='master') 
 ```
 Datashield server side R package resource. That is will install the the datashield R server side package of name `$name`.
 `$r_path` is the path to the R binary, the default is '/usr/bin/R'. `$opal_password` is the opal admin password, 
-`$opal_url` is the url of the Opal REST server, default is 'http://localhost:8080'. `$ref` sets the reference (from the
+`$opal_url` is the url of the Opal REST server, default is 'https://localhost:8443'. `$ref` sets the reference (from the
 github repo) of the server side package you are installing, default is master. 
 
 ### datashield::packages::libcurl

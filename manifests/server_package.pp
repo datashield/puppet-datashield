@@ -13,7 +13,7 @@
 # Admin password for opal (required to installed the datashield server packages)
 #
 # * `opal_url`
-# Url of the opal REST server, default is 'http://localhost:8080'
+# Url of the opal REST server, default is 'https://localhost:8443'
 #
 # * `ref`
 # The reference to install the server side R functions, default is master
@@ -33,7 +33,7 @@
 # Neil Parley
 #
 
-define datashield::server_package($r_path = '/usr/bin/R', $opal_password = 'password', $opal_url = 'http://localhost:8080',
+define datashield::server_package($r_path = '/usr/bin/R', $opal_password = 'password', $opal_url = 'https://localhost:8443',
   $githubusername = 'datashield', $ref = 'master') {
 
   include ::r
