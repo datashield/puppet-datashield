@@ -39,8 +39,8 @@ define datashield::server_package($r_path = '/usr/bin/R', $opal_password = 'pass
   include ::r
 
   exec { "install_datashield_package_${name}":
-    command   => "${r_path} -e \"library(opalr); o<-opal.login('administrator', '${opal_password}', url='${opal_url}'); dsadmin.install_package(o, '${name}', profile='default'); dsadmin.remove_package(o, '${name}', profile='default'); dsadmin.install_package(o, '${name}', githubusername='${githubusername}', ref='${ref}', profile='default'); dsadmin.set_package_methods(o, pkg='${name}', profile='default')\" | grep 'TRUE' ",
-    unless    => "${r_path} -e \"library(opalr); o<-opal.login('administrator', '${opal_password}', url='${opal_url}'); dsadmin.installed_package(o, '${name}', profile='default')\" | grep 'TRUE' ",
+    command   => "${r_path} -e \"library(opalr); o<-opal.login('administrator', '${opal_password}', url='${opal_url}', opts='list(ssl_verifyhost=0, ssl_verifypeer=0)'); dsadmin.install_package(o, '${name}', profile='default'); dsadmin.remove_package(o, '${name}', profile='default'); dsadmin.install_package(o, '${name}', githubusername='${githubusername}', ref='${ref}', profile='default'); dsadmin.set_package_methods(o, pkg='${name}', profile='default')\" | grep 'TRUE' ",
+    unless    => "${r_path} -e \"library(opalr); o<-opal.login('administrator', '${opal_password}', url='${opal_url}', opts='list(ssl_verifyhost=0, ssl_verifypeer=0)'); dsadmin.installed_package(o, '${name}', profile='default')\" | grep 'TRUE' ",
     require   => [Class['::r'], Class[::opal::install], ::R::Package['opalr']],
     tries     => '3',
     try_sleep => '10',
