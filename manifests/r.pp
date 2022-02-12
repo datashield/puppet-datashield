@@ -34,10 +34,11 @@ class datashield::r ($opal_password = 'password', $server_side = true,
                      $dsdanger_githubusername = 'datashield', $dsdanger_ref = 'master') {
   include datashield::packages::libcurl
   include datashield::packages::libxml
+  include datashield::packages::libnlopt
   include datashield::packages::openssl
   include ::r
 
-  Class['datashield::packages::libxml', 'datashield::packages::openssl'] ->
+  Class['datashield::packages::libcurl', 'datashield::packages::libxml', 'datashield::packages::libnlopt', 'datashield::packages::openssl'] ->
   ::r::package { 'opalr':
     repo         => ['http://cran.obiba.org', 'http://cran.rstudio.com'],
     dependencies => true,
