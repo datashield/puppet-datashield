@@ -126,9 +126,10 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
     if ($local_only_access){
       $grant_host = 'localhost'
       class { ::mysql::server:
-        restart          => true,
-        root_password    => $mysql_root_password,
-        override_options => { 'mysqld' =>
+        restart            => true,
+        root_password      => $mysql_root_password,
+        create_root_my_cnf => '/my.cnf',
+        override_options   => { 'mysqld' =>
         { 'default-storage-engine'  => 'innodb',
           'character-set-server'    => 'utf8', }
         }
@@ -136,9 +137,10 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
     } else {
       $grant_host = '%'
       class { ::mysql::server:
-        restart          => true,
-        root_password    => $mysql_root_password,
-        override_options => { 'mysqld' =>
+        restart            => true,
+        root_password      => $mysql_root_password,
+        create_root_my_cnf => '/my.cnf',
+        override_options   => { 'mysqld' =>
         { 'default-storage-engine'  => 'innodb',
           'character-set-server'    => 'utf8',
           'bind-address'            => '*' }
