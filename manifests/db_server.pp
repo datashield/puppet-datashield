@@ -129,7 +129,8 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
         restart            => true,
         root_password      => $mysql_root_password,
         config_file        => '/my.cnf',
-        create_root_my_cnf => true,
+        create_root_my_cnf => false,
+        login_file             => 'puppet:///modules/${module_name}/mylogin.cnf',
         override_options   => { 'mysqld' =>
         { 'default-storage-engine'  => 'innodb',
           'character-set-server'    => 'utf8', }
@@ -141,7 +142,7 @@ class datashield::db_server ($firewall=true, $local_only_access=true,
         restart            => true,
         root_password      => $mysql_root_password,
         config_file        => '/my.cnf',
-        create_root_my_cnf => true,
+        create_root_my_cnf => false,
         override_options   => { 'mysqld' =>
         { 'default-storage-engine'  => 'innodb',
           'character-set-server'    => 'utf8',
